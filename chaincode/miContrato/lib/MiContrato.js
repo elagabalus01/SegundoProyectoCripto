@@ -50,7 +50,7 @@ class MiContrato extends Contract {
         return movAsBytes.toString();
     }
 
-    async createMovimiento(ctx, movNumber, monto, fecha, owner) {
+    async createMovimiento(ctx, movNumber, fecha, monto, owner,referencia) {
         console.info('============= START : Create Car ===========');
 
         const movimiento = {

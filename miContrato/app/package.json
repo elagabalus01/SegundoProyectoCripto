@@ -10,12 +10,13 @@
         "lint": "eslint .",
         "pretest": "npm run lint",
         "test": "nyc mocha --recursive",
-        "start":"nodemon app.js"
+        "start": "nodemon app.js"
     },
     "engineStrict": true,
     "author": "Hyperledger",
     "license": "Apache-2.0",
     "dependencies": {
+        "body-parser": "^1.19.0",
         "fabric-ca-client": "^2.2.4",
         "fabric-network": "^2.2.4",
         "pug": "^3.0.2"
