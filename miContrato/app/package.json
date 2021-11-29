@@ -9,19 +9,22 @@
     "scripts": {
         "lint": "eslint .",
         "pretest": "npm run lint",
-        "test": "nyc mocha --recursive"
+        "test": "nyc mocha --recursive",
+        "start":"nodemon app.js"
     },
     "engineStrict": true,
     "author": "Hyperledger",
     "license": "Apache-2.0",
     "dependencies": {
         "fabric-ca-client": "^2.2.4",
-        "fabric-network": "^2.2.4"
+        "fabric-network": "^2.2.4",
+        "pug": "^3.0.2"
     },
     "devDependencies": {
         "chai": "^4.2.0",
         "eslint": "^5.9.0",
         "mocha": "^5.2.0",
+        "nodemon": "^2.0.15",
         "nyc": "^14.1.1",
         "sinon": "^7.1.1",
         "sinon-chai": "^3.3.0"
