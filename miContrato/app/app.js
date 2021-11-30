@@ -21,7 +21,7 @@ app.get('/render', function(req, res) {
 
 app.get('/fabric', function(req, res) {
     response={}
-    promise_data=connection.getData()
+    promise_data=connection.getAllTransactions()
     promise_data.then((data)=>{
             data=data.toString()
             data=JSON.parse(data)
@@ -30,21 +30,20 @@ app.get('/fabric', function(req, res) {
             response['data']=data
             res.send(response)
     },(error)=>{
-        response['data']="There was an error ;C"
+        response['data']="Hubo un error"
         res.send(response);
     })
 });
 
 app.post('/fabric', function(req, res) {
     response={}
-
     promise_data=connection.createTransaction(req.body.id,req.body.fecha,req.body.monto
         ,req.body.autor,req.body.referencia)
     promise_data.then((data)=>{
             response['data']='Done'
             res.send(response)
     },(error)=>{
-        response['data']="There was an error ;C"
+        response['data']="Hubo un error"
         res.send(response);
     })
 });

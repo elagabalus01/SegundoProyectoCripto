@@ -1,7 +1,7 @@
 const connectLedger=require('./connectLedger') // Biblioteca fachada para conexión con red fabric
 facade=new connectLedger.LedgerFacade()
 var result;
-// result=facade.getData()
+// result=facade.getAllTransactions()
 // result.then((datos)=>{
 //     console.log(`Datos: ${datos}`)
 // })
@@ -13,7 +13,7 @@ var result;
 // result.then((datos)=>{
 //     console.log(`Datos: ${datos}`)
 // })
-result=facade.getData()
+result=facade.getAllTransactions()
 result.then((datos)=>{
     console.log(`Datos: ${datos}`)
 })

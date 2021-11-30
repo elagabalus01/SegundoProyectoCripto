@@ -41,7 +41,7 @@ class LedgerFacade{
         return contract
     }
 
-    async getData() {
+    async getAllTransactions() {
         try {
             // Comprueba si ya se leyeron las credenciales
             if (!this.gotCredentials){
@@ -57,7 +57,6 @@ class LedgerFacade{
 
             // Evaluate the specified transaction.
             const result = await contract.evaluateTransaction('queryAllMovimientos');
-            //const result = await contract.evaluateTransaction('queryCar','CAR4');
             console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
             // Disconnect from the gateway.
             await this.gateway.disconnect();
@@ -89,7 +88,7 @@ class LedgerFacade{
         return result
     }
 
-    async createTransaction(id,fecha,monto,autor,referencia){
+    async createTransaction(id,fecha,monto,autor,referencia,dependencia){
         // Comprueba si ya se leyeron las credenciales
         if (!this.gotCredentials){
             await this.getCredentials()
@@ -102,7 +101,28 @@ class LedgerFacade{
 
         const contract = await this.getContract()
         // Evaluate the specified transaction.
-        const result = await contract.submitTransaction('createMovimiento',id,fecha,monto,autor,referencia);
+        const result = await contract.submitTransaction('createMovimiento',id,fecha,monto,autor,referencia,dependencia);
+        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // Disconnect from the gateway.
+        await this.gateway.disconnect();
+        return result
+    }
+
+    // Función para cambiar al responsable del registro de la transacción
+    async changeResponsable(id,new_reponsable){
+        // Comprueba si ya se leyeron las credenciales
+        if (!this.gotCredentials){
+            await this.getCredentials()
+        }
+
+        if (!this.identity) {
+            console.log('An identity for the user "appUser" does not exist in the wallet');
+            return;
+        }
+
+        const contract = await this.getContract()
+        // Evaluate the specified transaction.
+        const result = await contract.submitTransaction('changeMovimientoResponsable',id,new_reponsable);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         // Disconnect from the gateway.
         await this.gateway.disconnect();
