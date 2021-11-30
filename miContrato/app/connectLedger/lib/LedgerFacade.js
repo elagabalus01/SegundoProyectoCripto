@@ -4,8 +4,9 @@ const fs = require('fs');
 
 class LedgerFacade{
 
-    constructor(){
+    constructor(username){
         this.gotCredentials=false
+        this.username=username
     }
 
     async getCredentials(){
@@ -17,12 +18,18 @@ class LedgerFacade{
         this.wallet = await Wallets.newFileSystemWallet(walletPath);
         // console.log(`Wallet path: ${walletPath}`);
         // Check to see if we've already enrolled the user.
-        this.identity = await this.wallet.get('appUser');
+        this.identity = await this.wallet.get(this.username);
         // console.log(`ccp Path: ${ccpPath}`)
         // console.log(this.ccp)
         // console.log(this.wallet)
         // console.log(this.identity)
-        this.gotCredentials=true
+        if(this.identity){
+            console.log("Se encontraron las credenciales")
+            this.gotCredentials=true
+        }else{
+            this.gotCredentials=false
+            console.log("No se encontraron las credenciales")
+        }
     }
 
     async getContract(){
@@ -31,7 +38,8 @@ class LedgerFacade{
         var wallet=this.wallet
         var identity=this.identity
         var ccp=this.ccp
-        await this.gateway.connect(ccp, {wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+        var username=this.username
+        await this.gateway.connect(ccp, {wallet, identity: username, discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await this.gateway.getNetwork('mychannel');
@@ -49,8 +57,8 @@ class LedgerFacade{
             }
 
             if (!this.identity) {
-                console.log('No se ha podido identificar al usuario');
-                return;
+                console.log(`No se ha podido identificar al usuario ${this.username}`);
+                return false;
             }
 
             const contract =await this.getContract()
@@ -75,8 +83,8 @@ class LedgerFacade{
         }
 
         if (!this.identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
-            return;
+            console.log(`An identity for the user ${this.username} does not exist in the wallet`);
+            return false;
         }
 
         const contract =await this.getContract()
@@ -95,8 +103,8 @@ class LedgerFacade{
         }
 
         if (!this.identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
-            return;
+            console.log(`An identity for the user ${this.username} does not exist in the wallet`);
+            return false;
         }
 
         const contract = await this.getContract()
@@ -116,8 +124,8 @@ class LedgerFacade{
         }
 
         if (!this.identity) {
-            console.log('An identity for the user "appUser" does not exist in the wallet');
-            return;
+            console.log(`An identity for the user ${this.username} does not exist in the wallet`);
+            return false;
         }
 
         const contract = await this.getContract()
