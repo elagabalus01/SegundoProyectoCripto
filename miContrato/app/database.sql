@@ -9,6 +9,7 @@ create table catalogo_dependencia(
 );
 create table users(
     userid varchar(25) NOT NULL,
+    password varchar(64) NOT NULL,
     nombre varchar(25) NOT NULL,
     paterno varchar(25) NOT NULL,
     materno varchar(25),

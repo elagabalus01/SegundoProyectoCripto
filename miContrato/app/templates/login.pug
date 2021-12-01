@@ -1,0 +1,13 @@
+doctype html
+html
+    include constante/head.pug
+    body
+        h1 GobChain
+        form("action"="/login" "method"="POST")
+            label userid
+            input('name'='userid')
+            br
+            label password
+            input('name'='password')
+            br
+            input('type'='submit','value'='submit')

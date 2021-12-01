@@ -11,7 +11,7 @@ const { Wallets } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 
-async function main() {
+async function enrollAdmin() {
     try {
         // load the network configuration
         const ccpPath = path.resolve(process.cwd(), '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
@@ -53,4 +53,4 @@ async function main() {
     }
 }
 
-main();
+module.exports = enrollAdmin;
