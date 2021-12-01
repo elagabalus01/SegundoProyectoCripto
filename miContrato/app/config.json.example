@@ -1,0 +1,7 @@
+{
+    "database":{
+        "user":"xxxx",
+        "password":"xxxx",
+        "database":"prueba"
+    }
+}

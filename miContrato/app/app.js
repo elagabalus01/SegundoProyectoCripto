@@ -2,11 +2,12 @@ const express=require('express') // Biblioteca para definir rutas y enviar respu
 const pug=require('pug') // Biblioteca de renderizado de plantillas
 const bodyParser = require("body-parser");
 const connectLedger=require('./connectLedger') // Biblioteca fachada para conexión con red fabric
+const utils = require('./infraestructure')
 var app = express()
-var connection=new connectLedger.LedgerFacade('appUser2')
-var sessions={}
+var connection=new connectLedger.LedgerFacade('elagabalus')
+var session={}
 var cadena;
-const USER_ADMIN=new connectLedger.UserManagement()
+const USER_ADMIN_FABRIC=new connectLedger.UserManagement()
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -63,26 +64,58 @@ app.post('/fabric', function(req, res) {
 
 app.post('/register_user',function(req,res){
     response={}
-    if(!req.body.username){
-        response['data']="No se envió el nombre de usuario"
+    error=false
+    var result;
+    if(!req.body.userid & req.body.nombre & req.body.paterno &
+        req.body.dependenciaid){
+        response['data']="Faltan datos en el formulario"
         res.send(response);
         return;
     }
-    result=USER_ADMIN.registerUser(req.body.username)
+    user_data={
+        userid:req.body.userid,
+        nombre:req.body.nombre,
+        paterno:req.body.paterno,
+        materno:req.body.materno?req.body.materno:'',
+        dependenciaid:req.body.dependenciaid
+    }
+    // Registra usuario en la base de datos
+    try {
+        result=utils.RegisterUser.register_user(user_data)
+    } catch (e) {
+        error=true
+        response['data']="Hubo un error"
+        console.log("Se chacha error de mysql")
+    }
     result.then((data)=>{
         if(data){
             response['data']="Hecho"
-            res.send(response);
         }else{
             throw new Error();
         }
     },(error)=>{
         response['data']="Hubo un error"
-        res.send(response);
     }).catch(()=>{
         response['data']="Hubo un error"
-        res.send(response);
     })
+
+    if(!error){
+        // Registra al usuario en fabric
+        result=USER_ADMIN_FABRIC.registerUser(req.body.userid)
+        result.then((data)=>{
+            if(data){
+                response['data']="Hecho"
+                res.send(response);
+            }else{
+                throw new Error();
+            }
+        },(error)=>{
+            response['data']="Hubo un error"
+        }).catch(()=>{
+            response['data']="Hubo un error"
+        })
+    }
+    res.send(response);
 })
 
 app.listen(3000,function(){

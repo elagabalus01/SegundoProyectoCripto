@@ -1,4 +1,4 @@
-const connectLedger=require('./connectLedger') // Biblioteca fachada para conexión con red fabric
+// const connectLedger=require('./connectLedger') // Biblioteca fachada para conexión con red fabric
 const utils=require('./infraestructure') // Biblioteca fachada para conexión con base de datos
 function testFabric(){
     facade=new connectLedger.LedgerFacade()
@@ -23,17 +23,22 @@ function testFabric(){
 function test_db(){
     database=new utils.DatabaseFacade()
     var username='elagabalus'
-    database.runQuery(`insert into user values('${username}')`)
+    database.runQuery(`insert into users values('elagabalus','angel','s','',1,'XXXX')`)
+    console.log("Se ejecutó la consulta")
     return;
 }
 function test_user_reg(){
     user_data={
+        username:"elagabalus",
         nombre:"Ángel",
         paterno:"Santander",
-        materno:"Martínez"
+        materno:"Martínez",
+        dependenciaid:1
     }
-    utils.RegisterUser.register_user(user_data)
+    if(!utils.RegisterUser.register_user(user_data)){
+        console.log("No se pudo realiza la operación")
+    }
 }
 
-// test_db()
-test_user_reg()
+test_db()
+// test_user_reg()

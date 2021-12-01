@@ -7,7 +7,7 @@ class UserManagement{
     constructor() {
 
     }
-    async registerUser(username){
+    async registerUser(userid){
         try {
             // load the network configuration
             const ccpPath = path.resolve(process.cwd(), '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
@@ -23,9 +23,9 @@ class UserManagement{
             console.log(`Wallet path: ${walletPath}`);
 
             // Check to see if we've already enrolled the user.
-            const userIdentity = await wallet.get(username);
+            const userIdentity = await wallet.get(userid);
             if (userIdentity) {
-                console.log(`An identity for the user ${username} already exists in the wallet`);
+                console.log(`An identity for the user ${userid} already exists in the wallet`);
                 return false;
             }
 
@@ -44,11 +44,11 @@ class UserManagement{
             // Register the user, enroll the user, and import the new identity into the wallet.
             const secret = await ca.register({
                 affiliation: 'org1.department1',
-                enrollmentID: username,
+                enrollmentID: userid,
                 role: 'client'
             }, adminUser);
             const enrollment = await ca.enroll({
-                enrollmentID: username,
+                enrollmentID: userid,
                 enrollmentSecret: secret
             });
             const x509Identity = {
@@ -59,12 +59,12 @@ class UserManagement{
                 mspId: 'Org1MSP',
                 type: 'X.509',
             };
-            await wallet.put(username, x509Identity);
-            console.log(`Successfully registered and enrolled admin user ${username} and imported it into the wallet`);
+            await wallet.put(userid, x509Identity);
+            console.log(`Successfully registered and enrolled admin user ${userid} and imported it into the wallet`);
             return true
 
         } catch (error) {
-            console.error(`Failed to register user ${username}: ${error}`);
+            console.error(`Failed to register user ${userid}: ${error}`);
             return false
         }
     }
