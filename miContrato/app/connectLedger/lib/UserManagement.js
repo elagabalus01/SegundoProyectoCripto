@@ -62,10 +62,9 @@ class UserManagement{
             await wallet.put(userid, x509Identity);
             console.log(`Successfully registered and enrolled admin user ${userid} and imported it into the wallet`);
             return true
-
         } catch (error) {
             console.error(`Failed to register user ${userid}: ${error}`);
-            return false
+            throw error
         }
     }
 }

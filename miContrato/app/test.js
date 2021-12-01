@@ -23,22 +23,46 @@ function testFabric(){
 function test_db(){
     database=new utils.DatabaseFacade()
     var username='elagabalus'
-    database.runQuery(`insert into users values('elagabalus','angel','s','',1,'XXXX')`)
-    console.log("Se ejecutó la consulta")
+    var query_promise;
+    query_promise=database.runQuery(`SELECT * FROM catalogo_dependencia;`)
+    query_promise.then((result)=>{
+        result.forEach((item) => {
+            console.log(item.dependenciaid)
+            console.log(item.dependencia)
+        });
+    },(error)=>{
+        console.log(`Hubo un error ${error}`)
+    })
+
+    // query_promise=database.runQuery(`insert into users values('elagabalus','angel','s','',1,'XXXX');`)
+    // query_promise.then((result)=>{
+    //     result.forEach((item) => {
+    //         console.log(item)
+    //     });
+    // },(error)=>{
+    //     console.log(`Hubo un error ${error}`)
+    // })
+    // query_promise.then((result)=>{
+    //     console.log(result)
+    // })
+    //database.runQuery(`insert into users values('elagabalus','angel','s','',1,'XXXX');`)
+    // console.log("Se ejecutó la consulta")
     return;
 }
 function test_user_reg(){
     user_data={
-        username:"elagabalus",
+        userid:"usuario",
         nombre:"Ángel",
         paterno:"Santander",
         materno:"Martínez",
         dependenciaid:1
     }
-    if(!utils.RegisterUser.register_user(user_data)){
-        console.log("No se pudo realiza la operación")
-    }
+    utils.RegisterUser.register_user(user_data).then((result)=>{
+        console.log("Se insertó usuario")
+    },(error)=>{
+        console.log(`Error al insertar usuario ${error}`)
+    })
 }
 
-test_db()
-// test_user_reg()
+// test_db()
+test_user_reg()

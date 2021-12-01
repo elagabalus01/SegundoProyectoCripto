@@ -64,7 +64,6 @@ app.post('/fabric', function(req, res) {
 
 app.post('/register_user',function(req,res){
     response={}
-    error=false
     var result;
     if(!req.body.userid & req.body.nombre & req.body.paterno &
         req.body.dependenciaid){
@@ -80,42 +79,32 @@ app.post('/register_user',function(req,res){
         dependenciaid:req.body.dependenciaid
     }
     // Registra usuario en la base de datos
-    try {
-        result=utils.RegisterUser.register_user(user_data)
-    } catch (e) {
-        error=true
-        response['data']="Hubo un error"
-        console.log("Se chacha error de mysql")
-    }
+    result=utils.RegisterUser.register_user(user_data)
     result.then((data)=>{
-        if(data){
+        console.log("Usuario registrado en la base de datos")
+        // Registra al usuario en fabric
+        return USER_ADMIN_FABRIC.registerUser(req.body.userid)
+    },(error)=>{
+        response['data']=`Error ${error}`
+        console.log(response['data'])
+        return new Promise((resolve,reject)=>{
+            reject(error)
+        })
+    }).then((result)=>{
+        if(result){
             response['data']="Hecho"
+            res.send(response);
         }else{
             throw new Error();
         }
     },(error)=>{
-        response['data']="Hubo un error"
-    }).catch(()=>{
-        response['data']="Hubo un error"
+        response['data']=`Error ${error}`
+        res.send(response);
+    }).catch((exception)=>{
+        response['data']=`Exception ${exception}`
+        res.send(response);
     })
 
-    if(!error){
-        // Registra al usuario en fabric
-        result=USER_ADMIN_FABRIC.registerUser(req.body.userid)
-        result.then((data)=>{
-            if(data){
-                response['data']="Hecho"
-                res.send(response);
-            }else{
-                throw new Error();
-            }
-        },(error)=>{
-            response['data']="Hubo un error"
-        }).catch(()=>{
-            response['data']="Hubo un error"
-        })
-    }
-    res.send(response);
 })
 
 app.listen(3000,function(){
