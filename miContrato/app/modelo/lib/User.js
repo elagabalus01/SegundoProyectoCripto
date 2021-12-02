@@ -9,11 +9,7 @@ class User{
                 // Se evalúa la contraseña hasheada
                 if(result[0].password==try_hashed){
                     // Segunda consulta para recuperar los datos
-                    User.retrive_user_data(userid,db_connection).then((user)=>{
-                        resolve(user)
-                    },(error)=>{
-                        reject(`No se pudo recuperar la información del usuario ${error}`)
-                    })
+                    resolve(true)
                 }else{
                     reject("Contraseña incorrecta")
                 }
@@ -35,7 +31,9 @@ class User{
         })
 
     }
+
     constructor(data){
+        this.nombreCompleto=`${this.paterno} ${this.materno?this.materno+' ':''}${this.nombre}`
         this.userid=data.userid;
         this.nombre=data.nombre;
         this.paterno=data.paterno

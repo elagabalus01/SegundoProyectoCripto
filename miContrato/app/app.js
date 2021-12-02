@@ -11,7 +11,7 @@ var app = express()
 var connection=new connectLedger.LedgerFacade('elagabalus')
 var database_connection=new utils.DatabaseFacade()
 var sessions={}
-var cadena;
+
 const USER_ADMIN_FABRIC=new connectLedger.UserManagement()
 
 app.use(cookieParser())
@@ -19,29 +19,63 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('static')) // Se define la carpeta de archivos estáticos del servidor
 
-// Middleware para comprobar si el usario tiene permiso de consulta la página
-app.use('/app',(req,res,next)=>{
-    var sesssionid=req.cookies['gobchaincookie']
-    cadena="Esto viene del middleware"
-    if(sessions[sesssionid]){
+// Middleware para ercuperar conexión a fabric a partir de la sesión
+function fabricConnectionMiddleware(req,res,next){
+    console.log(`Fabric middleware user ${req.userid}`)
+    if(req.userid){
+        req.fabric_obj=new connectLedger.LedgerFacade(req.userid)
+        req.fabric_obj.getCredentials()
         next()
     }else{
         res.redirect('/')
     }
-});
+}
 
-// MIddleware para comprobar si el usuario está logeado
-app.use('/login',(req,res,next)=>{
-    var sesssionid=req.cookies['gobchaincookie']
-    if(sessions[sesssionid]){
+// Middleware para proteger rutas con credenciales
+function notLoggedInMiddleware(req,res,next){
+    console.log(`user ${req.userid}`)
+    if(req.userid){
+        var promise_user=models.User.retrive_user_data(req.userid,database_connection)
+        promise_user.then((result)=>{
+            req.user_obj=result
+            next()
+        },(error)=>{
+            console.log("Auth middleware: No se pudo recuperar al usuario")
+            res.redirect('/')
+        })
+    }else{
+        res.redirect('/')
+    }
+}
+// Middleware para proteger rutas para usuarios sin credenciales
+function alreadyLoggedInMiddleware(req,res,next){
+    if(req.userid){
         res.redirect('/app')
     }else{
         next()
     }
-});
+}
+
+// Middleware para proteger rutas para usuarios sin credenciales
+function authMiddleware(req,res,next){
+    var sesssionid=req.cookies['gobchaincookie']
+    if(sessions[sesssionid]){
+        req.userid=sessions[sesssionid]
+    }else{
+        req.userid=false
+    }
+    next()
+}
+
+// MIddleware para comprobar si el usuario está logeado
+app.use('/',authMiddleware);
+app.use('/app',notLoggedInMiddleware);
+app.use('/app/fabric',fabricConnectionMiddleware);
+app.use('/login',alreadyLoggedInMiddleware);
 
 app.get('/app',(req,res)=>{
-    res.send(cadena);
+    var rendered = pug.compileFile('templates/app.pug');
+    res.send(rendered())
 });
 
 app.get('/app/registro_movimientos',(req,res)=>{
@@ -50,15 +84,15 @@ app.get('/app/registro_movimientos',(req,res)=>{
 });
 
 app.get('/', function(req, res) {
-    res.send("Hola Mundo! <a href='/login'>Login</a>");
+    if(req.user){
+        res.redirect('/app')
+    }else{
+        var rendered = pug.compileFile('templates/entrada.pug');
+        res.send(rendered())
+    }
 });
-
-app.get('/render', function(req, res) {
-    render=renderHello()
-    res.send(render({name:"Ian"}));
-});
-
-app.get('/fabric', function(req, res) {
+// cambiar método a post para consumir de manera asíncrona
+app.get('/gobchain', function(req, res) {
     response={}
     promise_data=connection.getAllTransactions()
     promise_data.then((data)=>{
@@ -72,16 +106,21 @@ app.get('/fabric', function(req, res) {
     })
 });
 
-app.post('/fabric', function(req, res) {
+app.post('/app/fabric/agregar_transaccion', function(req, res) {
+    var user=req.user_obj
+    var fabric_con=req.fabric_obj
     response={}
-    promise_data=connection.createTransaction(req.body.id,req.body.fecha,req.body.monto
-        ,req.body.autor,req.body.referencia,req.body.dependencia)
-    promise_data.then((data)=>{
-            response['data']='Hecho'
-            res.send(response)
-    },(error)=>{
-        response['data']="Hubo un error"
-        res.send(response);
+    user.getDependencia.then((result)=>{
+        promise_data=fabric_con.createTransaction(user.userid,req.body.fecha,req.body.monto
+            ,user.nombreCompleto,req.body.referencia,result)
+            promise_data.then((data)=>{
+                response['data']='Hecho'
+                res.send(response)
+            },(error)=>{
+                response['data']="Hubo un error"
+                res.send(response);
+            })
+
     })
 });
 
@@ -124,6 +163,8 @@ app.post('/register_user',function(req,res){
             throw new Error();
         }
     },(error)=>{
+        // Si falla la creación de un usuario en fabric
+        // se debe eliminar el usuario de la base de datos
         response['data']=`Error ${error}`
         res.send(response);
     }).catch((exception)=>{
@@ -138,16 +179,14 @@ app.get('/login',(req,res)=>{
 })
 app.post('/login',(req,res)=>{
     // Registra la sesión de un usuario si se autentica de manera exitosa
+    var userid=req.body.userid;
     var user_promise=models.User.auth(req.body.userid,req.body.password,database_connection)
-    user_promise.then((user)=>{
-        sessions[user.userid]={
-            user_obj:user,
-            ledger_obj:new connectLedger.LedgerFacade(user.userid)
-        }
+    user_promise.then((result)=>{
+        // genear_sessionid(userid)
+        sessions[userid]=userid
         console.log(sessions)
-        console.log(`Usuario autentiacado ${user.userid}`)
-        res.cookie('gobchaincookie', user.userid)
-        res.redirect(`/app/registro_movimientos`);
+        res.cookie('gobchaincookie', userid)
+        res.redirect('/app');
     },(error)=>{
         console.log(`error al autenticar al usuario ${error}`)
         res.send(`error al autenticar al usuario ${error}`);
@@ -159,7 +198,8 @@ app.post('/logout',(req,res)=>{
     delete sessions[req.body.userid]
     res.clearCookie("gobchaincookie");
     console.log(sessions)
-    res.send(`Sesión cerrada correctamente`);
+    // res.send(`Sesión cerrada correctamente`);
+    res.redirect('/')
 })
 
 app.post('/dependencias',(req,res)=>{

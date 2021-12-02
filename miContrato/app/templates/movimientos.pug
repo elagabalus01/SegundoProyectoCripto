@@ -2,7 +2,9 @@ doctype html
 html
     include constante/head.pug
     body
-        h1 GobChain
+        include constante/navbar.pug
         h2 Registro de información
+        a('href'='/fabric') Ver transacciones
         form("action"="/logout" "method"="POST")
             input('type'='submit','value'='logout')
+    include constante/footer

@@ -1,17 +1,11 @@
 doctype html
 html
-  include constante/head.pug
-  body
-    h1('class'='prueba') Aplicación
-    p #{name}
-    h2 Hola mundo
-  div
-
-    a('href'="https://google.com",'target'='_blank')  Google
-    br
-    a('href'="https://youtube.com")  youtube
-  div
-    a('href'="https://facebook.com")  facebook
-    br
-    a('href'="https://twitter.com")  twitter
-  include constante/footer
+    include constante/head.pug
+    body
+        include constante/navbar.pug
+        ul
+            li Santander Martínez Ángel Antonio
+            a('href'='/login') login
+            br
+            a('href'='/signup') registro
+    include constante/footer
