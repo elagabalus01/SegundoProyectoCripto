@@ -32,12 +32,26 @@ class User{
 
     }
 
+    async retrive_dependency_data(db_connection){
+        var dependenciaid = this.dependenciaid
+        return new Promise((resolve,reject)=>{
+            var query_promise=db_connection.runQuery(`select * from catalogo_dependencia where dependenciaid='${dependenciaid}'`)
+            query_promise.then((result)=>{
+                resolve(result[0].dependencia)
+            },(error)=>{
+                reject(error)
+            }).catch((exception)=>{
+                reject(exception)
+            })
+        })
+    }
+
     constructor(data){
-        this.nombreCompleto=`${this.paterno} ${this.materno?this.materno+' ':''}${this.nombre}`
         this.userid=data.userid;
         this.nombre=data.nombre;
         this.paterno=data.paterno
         this.materno=data.materno
+        this.nombreCompleto=`${this.paterno} ${this.materno?this.materno+' ':''}${this.nombre}`
         this.dependenciaid=data.dependenciaid
         this.API_KEY=data.API_KEY
     }

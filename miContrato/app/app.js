@@ -7,12 +7,13 @@ const models = require('./modelo')
 const cookieParser = require('cookie-parser');
 const enrollAdmin = connectLedger.enrollAdmin
 enrollAdmin() // Se ejecuta el registro del adminitrador del nodo
+const USER_ADMIN_FABRIC=new connectLedger.UserManagement()
 var app = express()
-var connection=new connectLedger.LedgerFacade('elagabalus')
+var public_user='user'
+USER_ADMIN_FABRIC.registerUser(public_user)
+var connection=new connectLedger.LedgerFacade(public_user)
 var database_connection=new utils.DatabaseFacade()
 var sessions={}
-
-const USER_ADMIN_FABRIC=new connectLedger.UserManagement()
 
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -72,6 +73,7 @@ app.use('/',authMiddleware);
 app.use('/app',notLoggedInMiddleware);
 app.use('/app/fabric',fabricConnectionMiddleware);
 app.use('/login',alreadyLoggedInMiddleware);
+app.use('/signup',alreadyLoggedInMiddleware);
 
 app.get('/app',(req,res)=>{
     var rendered = pug.compileFile('templates/app.pug');
@@ -84,15 +86,22 @@ app.get('/app/registro_movimientos',(req,res)=>{
 });
 
 app.get('/', function(req, res) {
-    if(req.user){
+    if(req.userid){
         res.redirect('/app')
     }else{
         var rendered = pug.compileFile('templates/entrada.pug');
         res.send(rendered())
     }
 });
+
 // cambiar método a post para consumir de manera asíncrona
 app.get('/gobchain', function(req, res) {
+    var rendered = pug.compileFile('templates/gobchain.pug');
+    res.send(rendered())
+});
+
+// Función para recuperar de forma constante la cadena de bloque
+app.get('/debug', function(req, res) {
     response={}
     promise_data=connection.getAllTransactions()
     promise_data.then((data)=>{
@@ -106,25 +115,71 @@ app.get('/gobchain', function(req, res) {
     })
 });
 
-app.post('/app/fabric/agregar_transaccion', function(req, res) {
-    var user=req.user_obj
-    var fabric_con=req.fabric_obj
+// Función para recuperar de forma constante la cadena de bloque
+app.post('/gobchain', function(req, res) {
     response={}
-    user.getDependencia.then((result)=>{
-        promise_data=fabric_con.createTransaction(user.userid,req.body.fecha,req.body.monto
-            ,user.nombreCompleto,req.body.referencia,result)
-            promise_data.then((data)=>{
-                response['data']='Hecho'
-                res.send(response)
-            },(error)=>{
-                response['data']="Hubo un error"
-                res.send(response);
-            })
-
+    promise_data=connection.getAllTransactions()
+    promise_data.then((data)=>{
+            data=data.toString()
+            data=JSON.parse(data)
+            response['data']=data
+            res.send(response)
+    },(error)=>{
+        response['data']="Hubo un error"
+        res.send(response);
     })
 });
 
-app.post('/register_user',function(req,res){
+app.get('/app/agregar_transaccion', function(req, res) {
+    var rendered = pug.compileFile('templates/agregar_transaccion.pug');
+    res.send(rendered())
+})
+
+app.post('/app/fabric/agregar_transaccion', function(req, res) {
+
+    var user=req.user_obj
+    var fabric_con=req.fabric_obj
+
+    response={}
+    promise_data=connection.getAllTransactions()
+    promise_data.then((data)=>{
+        return new Promise((resolve,reject)=>{
+            data=data.toString()
+            data=JSON.parse(data)
+            resolve(data.length)
+        })
+    },(error)=>{
+        return new Promise((resolve,reject)=>{
+            reject(error)
+        })
+    }).then((longitud)=>{
+        user.retrive_dependency_data(database_connection).then((dependencia)=>{
+            promise_data=fabric_con.createTransaction(`mov${longitud}`,user.userid,utils.calcularFecha(),req.body.monto
+                ,user.nombreCompleto,req.body.referencia,dependencia)
+            promise_data.then((data)=>{
+                response['data']='Hecho'
+                console.log(response)
+                res.redirect('../agregar_transaccion')
+            },(error)=>{
+                response['data']=`Hubo un error: ${error}`
+                res.send(response);
+            })
+
+        })
+
+    },(error)=>{
+        response['data']=`Hubo un error: ${error}`
+        res.send(response);
+    })
+
+});
+
+app.get('/signup',function(req,res){
+    var rendered = pug.compileFile('templates/signup.pug');
+    res.send(rendered())
+})
+
+app.post('/signup',function(req,res){
     response={}
     var result;
     // console.log((req.body.userid & req.body.password & req.body.nombre & req.body.paterno &
@@ -158,7 +213,12 @@ app.post('/register_user',function(req,res){
     }).then((result)=>{
         if(result){
             response['data']="Hecho"
-            res.send(response);
+            userid=req.body.userid
+            sessions[userid]=userid
+            console.log(sessions)
+            res.cookie('gobchaincookie', userid)
+            res.redirect('/app');
+            console.log(response);
         }else{
             throw new Error();
         }
@@ -166,10 +226,12 @@ app.post('/register_user',function(req,res){
         // Si falla la creación de un usuario en fabric
         // se debe eliminar el usuario de la base de datos
         response['data']=`Error ${error}`
-        res.send(response);
+        res.redirect('/');
+        console.log(response);
     }).catch((exception)=>{
         response['data']=`Exception ${exception}`
-        res.send(response);
+        res.redirect('/');
+        console.log(response);
     })
 })
 

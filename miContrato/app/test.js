@@ -101,9 +101,32 @@ function dependencias(){
         console.log(`Hubo un error ${error}`)
     })
 }
+
+function test_dependencia(){
+    database=new utils.DatabaseFacade()
+    user=new modelos.User({userid:"gus",nombre:"gustavo",paterno:"jimenez", materno:"",dependenciaid:1})
+    console.log(user.nombreCompleto)
+    dependencia_promesa=user.retrive_dependency_data(database)
+    dependencia_promesa.then((result)=>{
+        console.log(result)
+    })
+    //console.log("promesa:",promesa)
+}
+
+function calcularFecha(){
+    var mydate = new Date(Date.now())
+    var month = ["enero", "febrero", "marzo", "abril", "mayor", "junio",
+  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"][mydate.getMonth()];
+    mydate_today=mydate.getDay()+" de "+month+" del "+mydate.getFullYear()
+    +" a las "+mydate.getHours()+":"+mydate.getMinutes()+" hrs"
+    console.log(mydate_today)
+}
+
 // test_db()
-// test_user_reg()
+//test_user_reg()
 // test_uuid()
 // test_api_key()
 // test_user()
-dependencias()
+//dependencias()
+//test_dependencia()
+calcularFecha()

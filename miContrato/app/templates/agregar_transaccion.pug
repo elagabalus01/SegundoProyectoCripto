@@ -1,0 +1,14 @@
+doctype html
+html
+    include constante/head.pug
+    body
+        include constante/navbar.pug
+        form("action"="/app/fabric/agregar_transaccion" "method"="POST")
+            label monto
+            input('name'='monto')
+            br
+            label referencia
+            textarea('name'='referencia')
+            br
+            input('type'='submit','value'='agregar transacción')
+    include constante/footer
