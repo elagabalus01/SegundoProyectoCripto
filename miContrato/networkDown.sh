@@ -13,4 +13,4 @@ pushd ../test-network
 popd
 
 # clean out any old identites in the wallets
-rm -rf app/wallet/*
+rm -rf app/wallet/*.id
