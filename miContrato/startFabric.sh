@@ -13,7 +13,7 @@ starttime=$(date +%s)
 CC_SRC_LANGUAGE="javascript"
 CC_SRC_PATH="../chaincode/miContrato/"
 # clean out any old identites in the wallets
-rm -rf app/wallet/*
+rm -rf app/wallet/*.id
 
 # launch network; create channel and join peer to channel
 pushd ../test-network

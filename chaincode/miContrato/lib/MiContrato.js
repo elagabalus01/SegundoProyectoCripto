@@ -14,25 +14,28 @@ class MiContrato extends Contract {
         console.info('============= START : Initialize Ledger ===========');
         const movimientos = [
             {
-                referencia: 'Servicio 1',
-                monto: 10,
-                fecha: '19-12-20 01:00',
+                userid: 'admin',
+                referencia: 'Reforestación con semillas de bambú',
+                monto: -2000,
+                fecha: '1 de diciembre del 2021 a las 17:17 hrs',
                 responsable: 'Usuario 1',
-                dependencia: 'salud'
+                dependencia: 'Secretaría del Medio Ambiente'
             },
             {
-                referencia: 'Servicio 2',
-                monto: 1000,
-                fecha: '09-12-20 10:00',
+                userid: 'admin',
+                referencia: 'Compra de mangueras',
+                monto: -1000,
+                fecha: '2 de diciembre del 2021 a las 17:17 hrs',
                 responsable: 'Usuario 2',
-                dependencia: 'obras'
+                dependencia: 'Secretaria de Protección Civil y Gestión Integral de Riesgos'
             },
             {
-                referencia: 'Servicio 3',
-                monto: 100,
-                fecha: '20-12-20 03:00',
+                userid: 'admin',
+                referencia: 'Retribución por ayuda del ciudadano en cámaras de seguridad',
+                monto: 6000,
+                fecha: '4 de diciembre del 2021 a las 17:17 hrs',
                 responsable: 'Usuario 3',
-                dependencia: 'gobernación'
+                dependencia: 'Secretaría de Seguridad Ciudadana'
             }
         ];
 
@@ -53,10 +56,11 @@ class MiContrato extends Contract {
         return movAsBytes.toString();
     }
 
-    async createMovimiento(ctx, movNumber, fecha, monto, responsable,referencia,dependencia) {
+    async createMovimiento(ctx, movNumber, userid, fecha, monto, responsable,referencia,dependencia) {
         console.info('============= START : Create movement ===========');
 
         const movimiento = {
+            userid,
             referencia,
             docType: 'movimiento',
             monto,

@@ -3,7 +3,9 @@ html
   include constante/head.pug
   body
     include constante/navbar.pug
-    a('href'='/fabric') ver transacciones
+    a('href'='/gobchain') ver transacciones
     br
-    a('href'='/app/registro_movimientos') agregar transacción
+    a('href'='/app/agregar_transaccion') agregar transacción
+    form("action"="/logout" "method"="POST")
+            input('type'='submit','value'='logout')
   include constante/footer

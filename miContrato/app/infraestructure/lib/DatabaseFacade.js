@@ -6,7 +6,7 @@ class DatabaseFacade{
         const env = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
         const database_config=env["database"]
         // Conexión con la base de datos
-        this.connection = new mysql.MySqlConnection('localhost',
+        this.connection = new mysql.MySqlConnection(database_config["host"],
             database_config["user"], database_config["password"], database_config["database"]);
 
         // Se informa el estado de la conexión

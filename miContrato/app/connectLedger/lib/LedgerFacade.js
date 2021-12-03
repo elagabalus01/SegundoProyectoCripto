@@ -96,7 +96,7 @@ class LedgerFacade{
         return result
     }
 
-    async createTransaction(id,fecha,monto,autor,referencia,dependencia){
+    async createTransaction(id,userid,fecha,monto,autor,referencia,dependencia){
         // Comprueba si ya se leyeron las credenciales
         if (!this.gotCredentials){
             await this.getCredentials()
@@ -109,7 +109,7 @@ class LedgerFacade{
 
         const contract = await this.getContract()
         // Evaluate the specified transaction.
-        const result = await contract.submitTransaction('createMovimiento',id,fecha,monto,autor,referencia,dependencia);
+        const result = await contract.submitTransaction('createMovimiento',id,userid,fecha,monto,autor,referencia,dependencia);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         // Disconnect from the gateway.
         await this.gateway.disconnect();
