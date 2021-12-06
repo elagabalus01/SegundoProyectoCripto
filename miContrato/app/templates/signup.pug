@@ -1,28 +1,45 @@
 doctype html
 html
-    include constante/head.pug
-    body
+    head
+        include constante/head.pug
+        link('rel'="stylesheet", href='css/styleForm.css')
+    body.bodyBackground
         include constante/navbar.pug
-        form("action"="/signup" "method"="POST")
-            label nombre
-            input('name'='nombre','required'='true')
-            br
-            label paterno
-            input('name'='paterno','required'='true')
-            br
-            label materno
-            input('name'='materno')
-            br
-            label dependencia
-            select('name'='dependenciaid', id='dependencia_select')
-                option('value'=1) cargando...
-            br
-            label usuario
-            input('name'='userid','required'='true')
-            br
-            label contraseña
-            input('name'='password','required'='true')
-            br
-            input('type'='submit','value'='submit')
+        div(class='d-flex justify-content-center')
+            .form-body
+              .row
+                .form-holder
+                  .form-content
+                    .form-items.backgroundForm
+                      h3 Registro de usuario
+                      p Por favor completa los siguientes datos:
+                      form.requires-validation("action"="/signup" "method"="POST")
+                        .col-md-12
+                          input.form-control(type='text' name='nombre' placeholder='Nombre' required='true')
+                          .valid-feedback Nombre válido
+                          .invalid-feedback Nombre inválido
+                        .col-md-12
+                          input.form-control(type='text' name='paterno' placeholder='Apellido paterno' required='true')
+                          .valid-feedback Apellido paterno válido
+                          .invalid-feedback Apellido paterno no válido
+                        .col-md-12
+                          input.form-control(type='text' name='materno' placeholder='Apellido materno' required='')
+                        .col-md-12
+                          select.form-select.mt-3(name='dependenciaid' required='', id='dependencia_select')
+                            option(selected='' disabled='' value='') Dependencia
+                            option(value='0') Cargando ...
+                          .valid-feedback You selected a position!
+                          .invalid-feedback Please select a position!
+                        .col-md-12
+                          input.form-control(type='text' name='userid' placeholder='Usuario' required='true')
+                          .valid-feedback Usuario válido
+                          .invalid-feedback Usuario no válido
+                        .col-md-12
+                          input.form-control(type='password' name='password' placeholder='Contraseña' required='true')
+                          .valid-feedback Contraseña válida
+                          .invalid-feedback Contraseña no válida
+                        .form-button.mt-3
+                          button#submit.btn.btn-primary(type='submit', value='submit') Registrarse
+
     include constante/footer
     script(src='/js/dependencias.js')
