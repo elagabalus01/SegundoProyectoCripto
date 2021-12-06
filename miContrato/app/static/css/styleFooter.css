@@ -5,6 +5,27 @@
     font-family: 'Sanchez', serif
 }
 
+.containerFooter{
+    background-color: #621132;
+    color: red;
+
+}
+
+.containerFooter1{
+    color: #621132;
+
+}
+
+.h1Footer{
+    color: white;
+    font-family: 'Readex Pro', sans-serif;
+}
+
+.pFooter{
+    color: white;
+    font-family: 'Readex Pro', sans-serif;
+}
+
 .footerCSS{
     background: black;
 }
@@ -36,7 +57,6 @@ i {
 }
 
 .display-3 {
-    font-family: 'Sanchez', serif
 }
 
 p {
@@ -44,5 +64,5 @@ p {
 }
 
 .lead {
-    font-family: 'Sanchez 200', serif
 }
+
