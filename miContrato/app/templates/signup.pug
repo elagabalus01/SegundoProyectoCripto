@@ -3,6 +3,9 @@ html
     head
         include constante/head.pug
         link('rel'="stylesheet", href='css/styleForm.css')
+        link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap' rel='stylesheet')
+        link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(rel='stylesheet' href='../css/styles.css')
     body.bodyBackground
         include constante/navbar.pug
         div(class='d-flex justify-content-center')
@@ -15,31 +18,49 @@ html
                       p Por favor completa los siguientes datos:
                       form.requires-validation("action"="/signup" "method"="POST")
                         .col-md-12
-                          input.form-control(type='text' name='nombre' placeholder='Nombre' required='true')
+                          input.form-control(type='text' name='nombre' required='true')
+                          label.form-control-placeholder(for='Nombre') Nombre
                           .valid-feedback Nombre válido
                           .invalid-feedback Nombre inválido
+                        br
                         .col-md-12
-                          input.form-control(type='text' name='paterno' placeholder='Apellido paterno' required='true')
+                          input.form-control(type='text' name='paterno' required='true')
+                          label.form-control-placeholder(for='Apellido paterno') Apellido paterno
                           .valid-feedback Apellido paterno válido
                           .invalid-feedback Apellido paterno no válido
+                        br
                         .col-md-12
-                          input.form-control(type='text' name='materno' placeholder='Apellido materno' required='')
+                          input.form-control(type='text' name='materno' required='')
+                          label.form-control-placeholder(for='Apellido materno') Apellido materno
+                        br
                         .col-md-12
                           select.form-select.mt-3(name='dependenciaid' required='', id='dependencia_select')
                             option(selected='' disabled='' value='') Dependencia
                             option(value='0') Cargando ...
                           .valid-feedback You selected a position!
                           .invalid-feedback Please select a position!
+                        br
                         .col-md-12
-                          input.form-control(type='text' name='userid' placeholder='Usuario' required='true')
+                          input.form-control.prueba(type='text' name='userid' required='true')
+                          label.form-control-placeholder(for='Usuario') Usuario
                           .valid-feedback Usuario válido
                           .invalid-feedback Usuario no válido
+                        br
                         .col-md-12
-                          input.form-control(type='password' name='password' placeholder='Contraseña' required='true')
+                          input#password-field.form-control(type='password' name='password' required='true')
+                          label.form-control-placeholder(for='Contraseña') Contraseña
+                          span.fa.fa-fw.fa-eye.field-icon.toggle-password(toggle='#password-field')
                           .valid-feedback Contraseña válida
                           .invalid-feedback Contraseña no válida
-                        .form-button.mt-3
-                          button#submit.btn.btn-primary(type='submit', value='submit') Registrarse
+                        br
+                        div(class='d-flex justify-content-center')
+                          .form-button.mt-3
+                            button#submit.btn.btn-primary(type='submit', value='submit') Registrarse
 
-    include constante/footer
-    script(src='/js/dependencias.js')
+include constante/footer
+script(src='/js/dependencias.js')
+
+script(src='js/jquery.min.js')
+script(src='js/popper.js')
+script(src='js/bootstrap.min.js')
+script(src='js/main.js')

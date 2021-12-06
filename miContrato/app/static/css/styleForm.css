@@ -43,7 +43,7 @@ html, body {
 }
 
 .form-content .form-items {
-    border: 3px solid #fff;
+    border: 3px solid #9d2449;
     padding: 40px;
     display: inline-block;
     width: 100%;
@@ -57,7 +57,7 @@ html, body {
 }
 
 .form-content h3 {
-    color: #fff;
+    color: #eaacac;
     text-align: left;
     font-size: 28px;
     font-weight: 600;
@@ -69,7 +69,7 @@ html, body {
 }
 
 .form-content p {
-    color: #fff;
+    color: #621132;
     text-align: left;
     font-size: 17px;
     font-weight: 300;
@@ -90,9 +90,12 @@ html, body {
     outline: 0;
     border-radius: 6px;
     background-color: #fff;
+    border-color: #621132 !important;
+    border-style: solid;
+    border-width: 2px !important;
     font-size: 15px;
     font-weight: 300;
-    color: #8D8D8D;
+    color: #56242a;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     margin-top: 16px;
@@ -103,7 +106,7 @@ html, body {
     background-color: #6C757D;
     outline: none;
     border: 0px;
-     box-shadow: none;
+    box-shadow: none;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active{
@@ -114,7 +117,14 @@ html, body {
 }
 
 .backgroundForm{
-    background-color: #621132;
+    background-color: #fff;
+}
+
+.btn.btn-primary {
+    background: #eaacac !important;
+    border: 1px solid #eaacac !important;
+    color: #fff !important;
+    font-weight: bold;
 }
 
 .form-content textarea {
@@ -154,3 +164,29 @@ html, body {
 .valid-feedback{
    color: #2acc80;
 }
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: darkslategray !important;
+            opacity: 1; /* Firefox */
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: red;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+            color: red;
+ }
+
+ .form-control-placeholder{
+    color: #56242a !important;
+ }
+
+ .field-icon.toggle-password{
+    color: #56242a !important;
+    padding-right: 30px;
+ }
+
+ .prueba{
+    border-color: red !important;
+ }
