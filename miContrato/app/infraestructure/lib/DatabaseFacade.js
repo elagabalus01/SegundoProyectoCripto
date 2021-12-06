@@ -13,7 +13,8 @@ class DatabaseFacade{
         this.connection.connectAsync().then((result)=>{
             console.log(`Conexión establecida ${result}`)
         },(error)=>{
-            console.log("No se pudo establecer la conexión")
+            console.log(`Error: ${error}`)
+            //console.log("No se pudo establecer la conexión")
             return false
         }).catch((error)=>{
             console.log(`Excepción: ${error}`)
