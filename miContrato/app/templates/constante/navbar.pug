@@ -1,22 +1,23 @@
 nav.navbar.navbar-fixed-top.navbar-expand-lg.navbar-dark(style='background-color: #621132;')
   a.navbar-brand(href='/')
-    img(src='https://www.capital21.cdmx.gob.mx/templates/administracionsprcdmx/img/logo.png' alt='' width='250px' height='70px')
+    img(src='https://www.capital21.cdmx.gob.mx/templates/administracionsprcdmx/img/logo.png' alt='' width='200px' height='100%')
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
-    ul.navbar-nav.m-auto
-      //li.nav-item
-      //    a.nav-link.disabled(href='#') Disabled
-      li.nav-item.active
-        a.nav-link(href='/')
-          | Inicio 
-          span.sr-only (current)
-      li.nav-item.active
-        a.nav-link(href='/login')
-          | Iniciar sesión
-      li.nav-item.active
-        a.nav-link(href='/signup')
-          | Registro 
-      //li.nav-item
-      //  a.nav-link(href='#') Link
+    div(class='d-flex justify-content-center')
+      ul.navbar-nav.m-auto
+        //li.nav-item
+        //    a.nav-link.disabled(href='#') Disabled
+        li.nav-item.active
+          a.nav-link(href='/')
+            | Inicio 
+            span.sr-only (current)
+        li.nav-item.active
+          a.nav-link(href='/login')
+            | Iniciar sesión
+        li.nav-item.active
+          a.nav-link(href='/signup')
+            | Registro 
+        //li.nav-item
+        //  a.nav-link(href='#') Link
       

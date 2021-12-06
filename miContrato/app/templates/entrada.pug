@@ -2,15 +2,59 @@ doctype html
 html
     head
         include constante/head.pug
+        link('rel'="stylesheet", href='css/styleEntrada.css')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css')
+        link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,500&subset=latin-ext' rel='stylesheet')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    include constante/navbar.pug
     body.bodyBackground
-        include constante/navbar.pug
-        ul
-            li Santander Martínez Ángel Antonio
-            li Santander Martínez Ángel Antonio
-            li Santander Martínez Ángel Antonio
-            li Santander Martínez Ángel Antonio
-            li Santander Martínez Ángel Antonio
-            a('href'='/login') login
-            br
-            a('href'='/signup') registro
-    include constante/footer
+      style.
+        html {
+        font-size: 14px;
+        }
+        .container {
+        font-size: 14px;
+        color: #666666;
+        font-family: "Open Sans";
+        }
+      .container
+        .row.pt-5.m-auto
+          .col-md-6.col-lg-4.pb-3
+            // Copy the content below until next comment
+            .card.card-custom.bg-dark.border-dark.border-0.text-white
+              .card-custom-img(style='background-image: url(../img/palacio.jpg);')
+              .card-custom-avatar
+                img.img-fluid(src='../img/user.png')
+              .card-body(style='overflow-y: auto')
+                h4.card-title Iniciar sesión
+                p.card-text
+                  | Accede a GOBCHAIN mediante tu usuario y contraseña
+              .card-footer(style='background: inherit; border-color: inherit;')
+                a.btn.btn-secondary(href='/login') Ir a inicio de sesión
+            // Copy until here
+          .col-md-6.col-lg-4.pb-3
+            // Copy the content below until next comment
+            .card.card-custom.bg-dark.border-dark.border-0.text-white
+              .card-custom-img(style='background-image: url(../img/bellasArtes.jpg);')
+              .card-custom-avatar
+                img.img-fluid(src='../img/formulario.png')
+              .card-body(style='overflow-y: auto')
+                h4.card-title Registrarse
+                p.card-text
+                  | Registrate con un nuevo usuario y contraseña para acceder a GOBCHAIN
+              .card-footer(style='background: inherit; border-color: inherit;')
+                a.btn.btn-secondary(href='/signup') Ir a Registro
+          .col-md-12.col-lg-4.pb-3
+            // Copy the content below until next comment
+            .card.card-custom.bg-dark.border-dark.border-0.text-white
+              .card-custom-img(style='background-image: url(../img/castillo.jpg);')
+              .card-custom-avatar
+                img.img-fluid(src='../img/blockchain2.png')
+              .card-body(style='overflow-y: auto')
+                h4.card-title Ver transacciones
+                p.card-text
+                  | Observa las transacciones que se han realizado en GOBCHAIN
+              .card-footer(style='background: inherit; border-color: inherit;')
+                a.btn.btn-secondary(href='/gobchain') Ir a transacciones
+
+include constante/footer
