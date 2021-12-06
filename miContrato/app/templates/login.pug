@@ -1,42 +1,40 @@
 doctype html
 html
-    include constante/head.pug
     include constante/navbar.pug
     head
-      title Login 05
-      meta(charset='utf-8')
-      meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+      include constante/head.pug
       link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap' rel='stylesheet')
       link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
       link(rel='stylesheet' href='../css/style.css')
       link(rel='stylesheet' href='../css/styles.css')
-    section.ftco-section
-      .container
-        .row.justify-content-center
-          .col-md-7.col-lg-5
-            .wrap
-              .img(style='background-image: url(../img/fondo.jpg);')
-              .login-wrap.p-4.p-md-5
-                .d-flex
-                  .w-100
-                    h3.mb-4 Inicia sesión
-                  .w-100
-                form.signin-form("action"="/login" "method"="POST")
-                  .form-group.mt-3
-                    input.form-control(type='text' required='' 'name'='userid')
-                    label.form-control-placeholder(for='username') username
-                  .form-group
-                    input#password-field.form-control(type='password' required='' 'name'='password')
-                    label.form-control-placeholder(for='password') Password
-                    span.fa.fa-fw.fa-eye.field-icon.toggle-password(toggle='#password-field')
-                  .form-group
-                    button.form-control.btn.btn-primary.rounded.submit.px-3(type='submit') Sign In
-                  .form-group.d-md-flex
-                    .w-50.text-left
-                      label.checkbox-wrap.checkbox-primary.mb-0
-                        | Remember Me
-                        input(type='checkbox' checked='')
-                        span.checkmark
+    body.bodyBackground
+      section.ftco-section
+        .container
+          .row.justify-content-center
+            .col-md-7.col-lg-5
+              .wrap
+                .img(style='background-image: url(../img/fondo.jpg);')
+                .login-wrap.p-4.p-md-5
+                  .d-flex
+                    .w-100
+                      h3.mb-4 Inicia sesión
+                    .w-100
+                  form.signin-form("action"="/login" "method"="POST")
+                    .form-group.mt-3
+                      input.form-control(type='text' required='' 'name'='userid')
+                      label.form-control-placeholder(for='username') username
+                    .form-group
+                      input#password-field.form-control(type='password' required='' 'name'='password')
+                      label.form-control-placeholder(for='password') Password
+                      span.fa.fa-fw.fa-eye.field-icon.toggle-password(toggle='#password-field')
+                    .form-group
+                      button.form-control.btn.btn-primary.rounded.submit.px-3(type='submit') Sign In
+                    .form-group.d-md-flex
+                      .w-50.text-left
+                        label.checkbox-wrap.checkbox-primary.mb-0
+                          | Remember Me
+                          input(type='checkbox' checked='')
+                          span.checkmark
 
 include constante/footer
 
