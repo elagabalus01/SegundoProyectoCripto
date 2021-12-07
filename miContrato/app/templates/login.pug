@@ -5,8 +5,8 @@ html
       include constante/head.pug
       link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap' rel='stylesheet')
       link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
-      link(rel='stylesheet' href='../css/style.css')
-      link(rel='stylesheet' href='../css/styles.css')
+      link(rel='stylesheet' href='/css/style.css')
+      link(rel='stylesheet' href='/css/styles.css')
     body.bodyBackground
       section.ftco-section
         .container
@@ -22,20 +22,15 @@ html
                   form.signin-form("action"="/login" "method"="POST")
                     .form-group.mt-3
                       input.form-control(type='text' required='' 'name'='userid')
-                      label.form-control-placeholder(for='username') username
+                      label.form-control-placeholder(for='Usuario') Usuario
+                    br
                     .form-group
                       input#password-field.form-control(type='password' required='' 'name'='password')
-                      label.form-control-placeholder(for='password') Password
+                      label.form-control-placeholder(for='Contraseña') Contraseña
                       span.fa.fa-fw.fa-eye.field-icon.toggle-password(toggle='#password-field')
+                    br
                     .form-group
-                      button.form-control.btn.btn-primary.rounded.submit.px-3(type='submit') Sign In
-                    .form-group.d-md-flex
-                      .w-50.text-left
-                        label.checkbox-wrap.checkbox-primary.mb-0
-                          | Remember Me
-                          input(type='checkbox' checked='')
-                          span.checkmark
-
+                      button.form-control.btn.btn-primary.rounded.submit.px-3(type='submit') Iniciar sesión
 include constante/footer
 
 script(src='js/jquery.min.js')

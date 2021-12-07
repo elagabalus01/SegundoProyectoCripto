@@ -22,12 +22,20 @@ div
         .col-lg-4.col-md-6.mb-4.mb-lg-0
           h6.text-uppercase.font-weight-bold.mb-4 Navegación
           ul.list-unstyled.mb-0
-            li.mb-2
-              a.text-muted(href='/login') Login
-            li.mb-2
-              a.text-muted(href='/signup') Register
+            if logged
+              li.mb-2.active
+                a.text-muted(href='/')
+                  | Inicio
+                  span.sr-only (current)
+              li.mb-2.active
+                form("action"="/logout" "method"="POST" id="myform_footer")
+                  a.text-muted(href='#' onclick="document.getElementById('myform_footer').submit()") Cerrar sesión
+            else
+                li.mb-2
+                  a.text-muted(href='/login') Iniciar sesión
+                li.mb-2
+                  a.text-muted(href='/signup') Registro
         .col-lg-4.col-md-6.mb-lg-0
           h6.text-uppercase.font-weight-bold.mb-4 Acerca de GOB CHAIN
           p.text-muted.mb-4
             | Es una red distribuida entre dependencias del gobierno, en la que cada una de ellas llena un formulario registrando los gastos, ingresos y el estado de sus cuentas. Estos formularios representan las transacciones en blockchain. Todos los registros están disponibles para que cualquiera lo pueda consultar.
-

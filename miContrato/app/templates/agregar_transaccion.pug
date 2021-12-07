@@ -1,13 +1,13 @@
 doctype html
 html
     head
-        include constanteLogin/head.pug
-        link('rel'="stylesheet", href='../css/styleForm.css')
+        include constante/head.pug
+        link('rel'="stylesheet", href='/css/styleForm.css')
         link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap' rel='stylesheet')
         link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
-        link(rel='stylesheet' href='../css/styles.css')
+        link(rel='stylesheet' href='/css/styles.css')
     body.bodyBackground
-        include constanteLogin/navbar.pug
+        include constante/navbar.pug
         div(class='d-flex justify-content-center')
             .form-body
               .row
@@ -28,15 +28,11 @@ html
                           label.form-control-placeholder(for='Descripción') Descripción
                           .valid-feedback Descripción válida
                           .invalid-feedback Descripción no válida
-                        
+
                         br
                         div(class='d-flex justify-content-center')
                           .form-button.mt-3
                             button#submit.btn.btn-primary(type='submit', value='submit') Registrar transacción
 
-include constanteLogin/footer
-
-script(src='../js/jquery.min.js')
-script(src='../js/popper.js')
-script(src='../js/bootstrap.min.js')
-script(src='../js/main.js')
+include constante/footer
+script(src='/js/main.js')

@@ -2,7 +2,7 @@ doctype html
 html
     head
         include constante/head.pug
-        link('rel'="stylesheet", href='css/styleEntrada.css')
+        link('rel'="stylesheet", href='/css/styleEntrada.css')
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css')
         link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,500&subset=latin-ext' rel='stylesheet')
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
@@ -41,7 +41,7 @@ html
               .card-body(style='overflow-y: auto')
                 h4.card-title Agregar transacción
                 p.card-text
-                  | Registrate con un nuevo usuario y contraseña para acceder a GOBCHAIN
+                  | Registra una nueva transacción dentro de GOBCHAIN
               .card-footer(style='background: inherit; border-color: inherit;')
                 a.btn.btn-secondary('href'='/app/agregar_transaccion') Ir a formulario de transacción
 
@@ -58,7 +58,5 @@ html
               .card-footer(style='background: inherit; border-color: inherit;')
                 form("action"="/logout" "method"="POST")
                         button.btn.btn-secondary.btn(type='submit') Cerrar
-
-
 
 include constante/footer

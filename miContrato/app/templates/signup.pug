@@ -2,10 +2,10 @@ doctype html
 html
     head
         include constante/head.pug
-        link('rel'="stylesheet", href='css/styleForm.css')
+        link('rel'="stylesheet", href='/css/styleForm.css')
         link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap' rel='stylesheet')
         link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
-        link(rel='stylesheet' href='../css/styles.css')
+        link(rel='stylesheet' href='/css/styles.css')
     body.bodyBackground
         include constante/navbar.pug
         div(class='d-flex justify-content-center')
@@ -30,8 +30,10 @@ html
                           .invalid-feedback Apellido paterno no válido
                         br
                         .col-md-12
-                          input.form-control(type='text' name='materno' required='')
+                          input.form-control(type='text' name='materno' required='false')
                           label.form-control-placeholder(for='Apellido materno') Apellido materno
+                          .valid-feedback Apellido materno válido
+                          .invalid-feedback Apellido materno no válido
                         br
                         .col-md-12
                           select.form-select.mt-3(name='dependenciaid' required='', id='dependencia_select')
@@ -59,8 +61,4 @@ html
 
 include constante/footer
 script(src='/js/dependencias.js')
-
-script(src='js/jquery.min.js')
-script(src='js/popper.js')
-script(src='js/bootstrap.min.js')
-script(src='js/main.js')
+script(src='/js/main.js')

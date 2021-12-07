@@ -62,8 +62,10 @@ function authMiddleware(req,res,next){
     var sesssionid=req.cookies['gobchaincookie']
     if(sessions[sesssionid]){
         req.userid=sessions[sesssionid]
+        req.logged=true
     }else{
         req.userid=false
+        req.logged=false
     }
     next()
 }
@@ -76,28 +78,28 @@ app.use('/login',alreadyLoggedInMiddleware);
 app.use('/signup',alreadyLoggedInMiddleware);
 
 app.get('/app',(req,res)=>{
-    var rendered = pug.compileFile('templates/app.pug');
-    res.send(rendered())
+    var rendered = pug.compileFile('templates/app.pug',req);
+    res.send(rendered(req))
 });
 
 app.get('/app/registro_movimientos',(req,res)=>{
-    var rendered = pug.compileFile('templates/movimientos.pug');
-    res.send(rendered())
+    var rendered = pug.compileFile('templates/movimientos.pug',req);
+    res.send(rendered(req))
 });
 
 app.get('/', function(req, res) {
     if(req.userid){
         res.redirect('/app')
     }else{
-        var rendered = pug.compileFile('templates/entrada.pug');
-        res.send(rendered())
+        var rendered = pug.compileFile('templates/entrada.pug',req);
+        res.send(rendered(req))
     }
 });
 
 // cambiar método a post para consumir de manera asíncrona
 app.get('/gobchain', function(req, res) {
-    var rendered = pug.compileFile('templates/gobchain.pug');
-    res.send(rendered())
+    var rendered = pug.compileFile('templates/gobchain.pug',req);
+    res.send(rendered(req))
 });
 
 // Función para recuperar de forma constante la cadena de bloque
@@ -131,8 +133,8 @@ app.post('/gobchain', function(req, res) {
 });
 
 app.get('/app/agregar_transaccion', function(req, res) {
-    var rendered = pug.compileFile('templates/agregar_transaccion.pug');
-    res.send(rendered())
+    var rendered = pug.compileFile('templates/agregar_transaccion.pug',req);
+    res.send(rendered(req))
 })
 
 app.post('/app/fabric/agregar_transaccion', function(req, res) {
@@ -175,8 +177,8 @@ app.post('/app/fabric/agregar_transaccion', function(req, res) {
 });
 
 app.get('/signup',function(req,res){
-    var rendered = pug.compileFile('templates/signup.pug');
-    res.send(rendered())
+    var rendered = pug.compileFile('templates/signup.pug',req);
+    res.send(rendered(req))
 })
 
 app.post('/signup',function(req,res){
@@ -236,8 +238,8 @@ app.post('/signup',function(req,res){
 })
 
 app.get('/login',(req,res)=>{
-    var rendered = pug.compileFile('templates/login.pug');
-    res.send(rendered())
+    var rendered = pug.compileFile('templates/login.pug',req);
+    res.send(rendered(req))
 })
 app.post('/login',(req,res)=>{
     // Registra la sesión de un usuario si se autentica de manera exitosa
@@ -283,9 +285,3 @@ app.post('/dependencias',(req,res)=>{
 app.listen(3000,function(){
     console.log("Runnig")
 });
-
-function renderHello() {
-    var rendered = pug.compileFile('templates/entrada.pug');
-    console.log(rendered)
-    return rendered;
-}

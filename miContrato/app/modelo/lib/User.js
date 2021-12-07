@@ -7,11 +7,15 @@ class User{
             var try_hashed=crypto.createHash('sha256').update(password, 'utf8').digest().toString("hex")
             query_promise.then((result)=>{
                 // Se evalúa la contraseña hasheada
-                if(result[0].password==try_hashed){
-                    // Segunda consulta para recuperar los datos
-                    resolve(true)
+                if (result.length>0){
+                    if(result[0].password==try_hashed){
+                        // Segunda consulta para recuperar los datos
+                        resolve(true)
+                    }else{
+                        reject("Contraseña incorrecta")
+                    }
                 }else{
-                    reject("Contraseña incorrecta")
+                    reject("No existe el usuario")
                 }
             },(error)=>{
                 reject(error)
