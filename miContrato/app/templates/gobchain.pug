@@ -1,8 +1,23 @@
 doctype html
 html
-    include constante/head.pug
-    body
-        include constante/navbar.pug
-        div(id="transacciones")
+    head
+        include constante/head.pug
+        link('rel'="stylesheet", href='css/styleEntrada.css')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css')
+        link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,500&subset=latin-ext' rel='stylesheet')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    include constante/navbar.pug
+    body.bodyBackground
+      style.
+        html {
+        font-size: 14px;
+        }
+        .container {
+        font-size: 14px;
+        color: #666666;
+        font-family: "Open Sans";
+        }
+      div.container
+        .row.pt-5.m-auto(id="transacciones")
     include constante/footer
     script(src="/js/gobchain.js")

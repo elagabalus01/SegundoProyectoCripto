@@ -1,14 +1,42 @@
 doctype html
 html
-    include constante/head.pug
-    body
-        include constante/navbar.pug
-        form("action"="/app/fabric/agregar_transaccion" "method"="POST")
-            label monto
-            input('name'='monto')
-            br
-            label referencia
-            textarea('name'='referencia')
-            br
-            input('type'='submit','value'='agregar transacción')
-    include constante/footer
+    head
+        include constanteLogin/head.pug
+        link('rel'="stylesheet", href='../css/styleForm.css')
+        link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap' rel='stylesheet')
+        link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(rel='stylesheet' href='../css/styles.css')
+    body.bodyBackground
+        include constanteLogin/navbar.pug
+        div(class='d-flex justify-content-center')
+            .form-body
+              .row
+                .form-holder
+                  .form-content
+                    .form-items.backgroundForm
+                      h3 Registro de transacción
+                      p Por favor completa los siguientes datos:
+                      form.requires-validation("action"="/app/fabric/agregar_transaccion" "method"="POST")
+                        .col-md-12
+                          input.form-control(type='text' name='monto' required='true')
+                          label.form-control-placeholder(for='Monto') Monto
+                          .valid-feedback Monto válido
+                          .invalid-feedback Monto inválido
+                        br
+                        .col-md-12
+                          textarea.form-control(type='text' name='referencia' required='true')
+                          label.form-control-placeholder(for='Descripción') Descripción
+                          .valid-feedback Descripción válida
+                          .invalid-feedback Descripción no válida
+                        
+                        br
+                        div(class='d-flex justify-content-center')
+                          .form-button.mt-3
+                            button#submit.btn.btn-primary(type='submit', value='submit') Registrar transacción
+
+include constanteLogin/footer
+
+script(src='../js/jquery.min.js')
+script(src='../js/popper.js')
+script(src='../js/bootstrap.min.js')
+script(src='../js/main.js')
