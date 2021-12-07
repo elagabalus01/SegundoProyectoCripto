@@ -11,7 +11,7 @@ class DatabaseFacade{
 
         // Se informa el estado de la conexión
         this.connection.connectAsync().then((result)=>{
-            console.log(`Conexión establecida ${result}`)
+            console.log(`Conexión con la base de datos establecida`)
         },(error)=>{
             console.log(`Error: ${error}`)
             //console.log("No se pudo establecer la conexión")

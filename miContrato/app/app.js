@@ -5,12 +5,19 @@ const connectLedger=require('./connectLedger') // Biblioteca fachada para conexi
 const utils = require('./infraestructure')
 const models = require('./modelo')
 const cookieParser = require('cookie-parser');
+
 const enrollAdmin = connectLedger.enrollAdmin
-enrollAdmin() // Se ejecuta el registro del adminitrador del nodo
 const USER_ADMIN_FABRIC=new connectLedger.UserManagement()
+const public_user='user'
+// Se ejecuta el registro del adminitrador del nodo
+// Si la promesa se resulve de manera correcta entonces se crea al usuario
+enrollAdmin().then((result)=>{
+    USER_ADMIN_FABRIC.registerUser(public_user)
+},(error)=>{
+    console.log(`ERROR AL REGISTRAR AL ADMINISTRADOR: ${error}`)
+})
+
 var app = express()
-var public_user='user'
-USER_ADMIN_FABRIC.registerUser(public_user)
 var connection=new connectLedger.LedgerFacade(public_user)
 var database_connection=new utils.DatabaseFacade()
 var sessions={}
@@ -312,9 +319,6 @@ function render_pug_file(pug_file,req,res){
         error_flag:res.error_flag,
         error_msg:req.error_msg
     }
-    console.log(`REQ ${req.error_msg}`)
-    console.log(`REQ ${req.error_flag}`)
-    console.log(`RES ${res.error_flag}`)
     var rendered = pug.compileFile(pug_file,options);
     return rendered(options)
 }

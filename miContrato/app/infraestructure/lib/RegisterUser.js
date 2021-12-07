@@ -3,7 +3,7 @@ const crypto=require('crypto') // Importación de la biblioteca criptográfica d
 var database=new DatabaseFacade()
 class RegisterUser{
     // Clase para registrar un usuario en la base de datos
-    static async register_user (data){
+    static async register_user(data){
         var api_key=RegisterUser.generateAPIKey()
         var hashed_pass=crypto.createHash('sha256').update(data.password, 'utf8').digest().toString("hex")
         var query=`insert into users values('${data.userid}','${hashed_pass}','${data.nombre}','${data.paterno}','${data.materno}',${data.dependenciaid},'${api_key}');`
