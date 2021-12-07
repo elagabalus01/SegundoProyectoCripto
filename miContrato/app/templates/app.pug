@@ -1,11 +1,64 @@
 doctype html
 html
-  include constante/head.pug
-  body
+    head
+        include constante/head.pug
+        link('rel'="stylesheet", href='css/styleEntrada.css')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css')
+        link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,500&subset=latin-ext' rel='stylesheet')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
     include constante/navbar.pug
-    a('href'='/gobchain') ver transacciones
-    br
-    a('href'='/app/agregar_transaccion') agregar transacción
-    form("action"="/logout" "method"="POST")
-            input('type'='submit','value'='logout')
-  include constante/footer
+    body.bodyBackground
+      style.
+        html {
+        font-size: 14px;
+        }
+        .container {
+        font-size: 14px;
+        color: #666666;
+        font-family: "Open Sans";
+        }
+      .container
+        .row.pt-5.m-auto
+          .col-md-6.col-lg-4.pb-3
+            // Copy the content below until next comment
+            .card.card-custom.bg-dark.border-dark.border-0.text-white
+              .card-custom-img(style='background-image: url(../img/castillo.jpg);')
+              .card-custom-avatar
+                img.img-fluid(src='../img/blockchain2.png')
+              .card-body(style='overflow-y: auto')
+                h4.card-title Ver transacciones
+                p.card-text
+                  | Observa las transacciones que se han realizado en GOBCHAIN
+              .card-footer(style='background: inherit; border-color: inherit;')
+                a.btn.btn-secondary(href='/gobchain') Ir a transacciones
+            // Copy until here
+          .col-md-6.col-lg-4.pb-3
+            // Copy the content below until next comment
+            .card.card-custom.bg-dark.border-dark.border-0.text-white
+              .card-custom-img(style='background-image: url(../img/TemploMayor.jpg);')
+              .card-custom-avatar
+                img.img-fluid(src='../img/registro.png')
+              .card-body(style='overflow-y: auto')
+                h4.card-title Agregar transacción
+                p.card-text
+                  | Registrate con un nuevo usuario y contraseña para acceder a GOBCHAIN
+              .card-footer(style='background: inherit; border-color: inherit;')
+                a.btn.btn-secondary('href'='/app/agregar_transaccion') Ir a formulario de transacción
+
+          .col-md-12.col-lg-4.pb-3
+            // Copy the content below until next comment
+            .card.card-custom.bg-dark.border-dark.border-0.text-white
+              .card-custom-img(style='background-image: url(../img/catedral.jpg);')
+              .card-custom-avatar
+                img.img-fluid(src='../img/logout.png')
+              .card-body(style='overflow-y: auto')
+                h4.card-title Cerrar sesión
+                p.card-text
+                  | Cerrar sesión iniciada
+              .card-footer(style='background: inherit; border-color: inherit;')
+                form("action"="/logout" "method"="POST")
+                        button.btn.btn-secondary.btn(type='submit') Cerrar
+
+
+
+include constante/footer
