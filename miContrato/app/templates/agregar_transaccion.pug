@@ -18,7 +18,7 @@ html
                       p Por favor completa los siguientes datos:
                       form.requires-validation("action"="/app/fabric/agregar_transaccion" "method"="POST")
                         .col-md-12
-                          input.form-control(type='text' name='monto' required='true')
+                          input.form-control(type='number' name='monto' required='true')
                           label.form-control-placeholder(for='Monto') Monto
                           .valid-feedback Monto válido
                           .invalid-feedback Monto inválido

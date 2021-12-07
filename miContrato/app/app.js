@@ -78,28 +78,32 @@ app.use('/login',alreadyLoggedInMiddleware);
 app.use('/signup',alreadyLoggedInMiddleware);
 
 app.get('/app',(req,res)=>{
-    var rendered = pug.compileFile('templates/app.pug',req);
-    res.send(rendered(req))
+    // var rendered = pug.compileFile('templates/app.pug',req);
+    // res.send(rendered(req))
+    res.send(render_pug_file('templates/app.pug',req,res))
 });
 
 app.get('/app/registro_movimientos',(req,res)=>{
-    var rendered = pug.compileFile('templates/movimientos.pug',req);
-    res.send(rendered(req))
+    // var rendered = pug.compileFile('templates/movimientos.pug',req);
+    // res.send(rendered(req))
+    res.send(render_pug_file('templates/movimientos.pug',req,res))
 });
 
 app.get('/', function(req, res) {
     if(req.userid){
         res.redirect('/app')
     }else{
-        var rendered = pug.compileFile('templates/entrada.pug',req);
-        res.send(rendered(req))
+        // var rendered = pug.compileFile('templates/entrada.pug',req);
+        // res.send(rendered(req))
+        res.send(render_pug_file('templates/entrada.pug',req,res))
     }
 });
 
 // cambiar método a post para consumir de manera asíncrona
 app.get('/gobchain', function(req, res) {
-    var rendered = pug.compileFile('templates/gobchain.pug',req);
-    res.send(rendered(req))
+    // var rendered = pug.compileFile('templates/gobchain.pug',req);
+    // res.send(rendered(req))
+    res.send(render_pug_file('templates/gobchain.pug',req,res))
 });
 
 // Función para recuperar de forma constante la cadena de bloque
@@ -133,8 +137,9 @@ app.post('/gobchain', function(req, res) {
 });
 
 app.get('/app/agregar_transaccion', function(req, res) {
-    var rendered = pug.compileFile('templates/agregar_transaccion.pug',req);
-    res.send(rendered(req))
+    // var rendered = pug.compileFile('templates/agregar_transaccion.pug',req);
+    // res.send(rendered(req))
+    res.send(render_pug_file('templates/agregar_transaccion.pug',req,res))
 })
 
 app.post('/app/fabric/agregar_transaccion', function(req, res) {
@@ -161,7 +166,7 @@ app.post('/app/fabric/agregar_transaccion', function(req, res) {
             promise_data.then((data)=>{
                 response['data']='Hecho'
                 console.log(response)
-                res.redirect('../agregar_transaccion')
+                res.redirect('/app')
             },(error)=>{
                 response['data']=`Hubo un error: ${error}`
                 res.send(response);
@@ -177,11 +182,15 @@ app.post('/app/fabric/agregar_transaccion', function(req, res) {
 });
 
 app.get('/signup',function(req,res){
-    var rendered = pug.compileFile('templates/signup.pug',req);
-    res.send(rendered(req))
+    // var rendered = pug.compileFile('templates/signup.pug',req);
+    // res.send(rendered(req))
+    req.error_msg=req.param('error_msg')
+    res.send(render_pug_file('templates/signup.pug',req,res))
 })
 
 app.post('/signup',function(req,res){
+    req.error_flag=false
+    res.error_flag=false
     response={}
     var result;
     // console.log((req.body.userid & req.body.password & req.body.nombre & req.body.paterno &
@@ -201,6 +210,14 @@ app.post('/signup',function(req,res){
         dependenciaid:req.body.dependenciaid
     }
     // Registra usuario en la base de datos
+    if(req.body.userid==public_user){
+        req.error_flag=true
+        res.error_flag=true
+        console.log("Se intentó registrar con el usuario publico")
+        req.error_msg="Este usuario ya se encuentra registrado"
+        res.redirect('/signup?error_msg=Este usuario ya se encuentra registrado');
+        return
+    }
     result=utils.RegisterUser.register_user(user_data)
     result.then((data)=>{
         console.log("Usuario registrado en la base de datos")
@@ -228,18 +245,20 @@ app.post('/signup',function(req,res){
         // Si falla la creación de un usuario en fabric
         // se debe eliminar el usuario de la base de datos
         response['data']=`Error ${error}`
-        res.redirect('/');
+        error_msg="El usuario ya está registrado"
+        res.redirect(`/signup?error_msg=${error_msg}`);
         console.log(response);
     }).catch((exception)=>{
-        response['data']=`Exception ${exception}`
-        res.redirect('/');
+        response['data']=`Error ${exception}`
+        req.error_msg=`${exception}`
+        res.redirect(`/signup?error_msg=${exception}`);
         console.log(response);
     })
 })
 
 app.get('/login',(req,res)=>{
-    var rendered = pug.compileFile('templates/login.pug',req);
-    res.send(rendered(req))
+    req.error_msg=req.param('error_msg')
+    res.send(render_pug_file('templates/login.pug',req,res))
 })
 app.post('/login',(req,res)=>{
     // Registra la sesión de un usuario si se autentica de manera exitosa
@@ -252,8 +271,9 @@ app.post('/login',(req,res)=>{
         res.cookie('gobchaincookie', userid)
         res.redirect('/app');
     },(error)=>{
+        error_msg="El nombre de usuario o la contraseña es incorrecto"
+        res.redirect(`/login?error_msg=${error_msg}`);
         console.log(`error al autenticar al usuario ${error}`)
-        res.send(`error al autenticar al usuario ${error}`);
     })
 })
 
@@ -273,7 +293,7 @@ app.post('/dependencias',(req,res)=>{
         result.forEach((item) => {
             data.push({dependenciaid:item.dependenciaid,dependencia:item.dependencia})
         });
-        console.log(data)
+        // console.log(data)
         res.send({data:data})
         // console.log(JSON.parse({data:result}))
     },(error)=>{
@@ -285,3 +305,16 @@ app.post('/dependencias',(req,res)=>{
 app.listen(3000,function(){
     console.log("Runnig")
 });
+
+function render_pug_file(pug_file,req,res){
+    options={
+        logged:req.logged,
+        error_flag:res.error_flag,
+        error_msg:req.error_msg
+    }
+    console.log(`REQ ${req.error_msg}`)
+    console.log(`REQ ${req.error_flag}`)
+    console.log(`RES ${res.error_flag}`)
+    var rendered = pug.compileFile(pug_file,options);
+    return rendered(options)
+}

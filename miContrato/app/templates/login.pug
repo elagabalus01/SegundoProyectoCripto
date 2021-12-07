@@ -32,8 +32,21 @@ html
                     .form-group
                       button.form-control.btn.btn-primary.rounded.submit.px-3(type='submit') Iniciar sesión
 include constante/footer
-
+if error_msg
+    .modal(tabindex='-1' role='dialog' id='myModal')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5.modal-title Ha ocurrido un error
+            button.close(type='button' data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body
+            p #{error_msg}.
+          .modal-footer
+            button.btn.btn-secondary(type='button' data-dismiss='modal') Cerrar
 script(src='js/jquery.min.js')
 script(src='js/popper.js')
 script(src='js/bootstrap.min.js')
 script(src='js/main.js')
+if error_msg
+    script(src='/js/error.js')

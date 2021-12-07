@@ -13,6 +13,12 @@ function obtener_transacciones(){
 			data.forEach(item=>{
 				cont += 1
 				record = item["Record"]
+				monto_signo=parseInt(record["monto"])
+				if(monto_signo>0){
+						signo_badge='<span class="badge badge-success">Ingreso</span>'
+				}else{
+					signo_badge='<span class="badge badge-danger">Gasto</span>'
+				}
 				transacciones.innerHTML+=`
     <div class="col-md-6 col-lg-4 pb-3">
         <!-- Copy the content below until next comment-->
@@ -20,6 +26,9 @@ function obtener_transacciones(){
             <div class="card-custom-img" style="background-image: url(../img/fondo.jpg);"></div>
             <div class="card-custom-avatar"><img class="img-fluid" src="../img/blockchain2.png"></div>
             <div class="card-body" style="overflow-y: auto">
+				${signo_badge}
+				<br>
+				<br>
                 <h4 class="card-title">Movimiento: ${cont}</h4>
                 <p class="card-text">Registrado por: ${record["responsable"]}</p>
                 <p class="card-text">Dependencia: ${record["dependencia"]}</p>

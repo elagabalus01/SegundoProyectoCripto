@@ -58,7 +58,20 @@ html
                         div(class='d-flex justify-content-center')
                           .form-button.mt-3
                             button#submit.btn.btn-primary(type='submit', value='submit') Registrarse
-
-include constante/footer
+    include constante/footer
+    if error_msg
+        .modal(tabindex='-1' role='dialog' id='myModal')
+          .modal-dialog(role='document')
+            .modal-content
+              .modal-header
+                h5.modal-title Ha ocurrido un error
+                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                  span(aria-hidden='true') &times;
+              .modal-body
+                p #{error_msg}.
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-dismiss='modal') Cerrar
 script(src='/js/dependencias.js')
 script(src='/js/main.js')
+if error_msg
+    script(src='/js/error.js')
