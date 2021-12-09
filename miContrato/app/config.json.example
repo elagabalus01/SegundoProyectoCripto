@@ -3,6 +3,6 @@
 	"host":"localhost",
         "user":"xxxx",
         "password":"xxxx",
-        "database":"prueba"
+        "database":"gobchain"
     }
 }
