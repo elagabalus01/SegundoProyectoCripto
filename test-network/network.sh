@@ -155,6 +155,36 @@ function createOrgs() {
       fatalln "Failed to generate certificates..."
     fi
 
+    infoln "Creating Org3 Identities"
+
+    set -x
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-org3.yaml --output="organizations"
+    res=$?
+    { set +x; } 2>/dev/null
+    if [ $res -ne 0 ]; then
+      fatalln "Failed to generate certificates..."
+    fi
+
+    infoln "Creating Org4 Identities"
+
+    set -x
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-org4.yaml --output="organizations"
+    res=$?
+    { set +x; } 2>/dev/null
+    if [ $res -ne 0 ]; then
+      fatalln "Failed to generate certificates..."
+    fi
+
+    infoln "Creating Org5 Identities"
+
+    set -x
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-org5.yaml --output="organizations"
+    res=$?
+    { set +x; } 2>/dev/null
+    if [ $res -ne 0 ]; then
+      fatalln "Failed to generate certificates..."
+    fi
+
     infoln "Creating Orderer Org Identities"
 
     set -x
@@ -191,13 +221,25 @@ function createOrgs() {
 
     createOrg2
 
+    infoln "Creating Org3 Identities"
+
+    createOrg3
+
+    infoln "Creating Org4 Identities"
+
+    createOrg4
+
+    infoln "Creating Org5 Identities"
+
+    createOrg5
+
     infoln "Creating Orderer Org Identities"
 
     createOrderer
 
   fi
 
-  infoln "Generating CCP files for Org1 and Org2"
+  infoln "Generating CCP files for Org1, Org2, Org3, Org4 and Org5"
   ./organizations/ccp-generate.sh
 }
 
@@ -234,7 +276,7 @@ function networkUp() {
   if [ ! -d "organizations/peerOrganizations" ]; then
     createOrgs
   fi
-
+  echo "SE CREARON LAS ORGANIZACIONES"
   COMPOSE_FILES="-f ${COMPOSE_FILE_BASE}"
 
   if [ "${DATABASE}" == "couchdb" ]; then
@@ -267,6 +309,7 @@ function createChannel() {
 
 ## Call the script to deploy a chaincode to the channel
 function deployCC() {
+  infoln "Comenzando con la instalación de la cadena"
   scripts/deployCC.sh $CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE
 
   if [ $? -ne 0 ]; then
@@ -292,6 +335,9 @@ function networkDown() {
     ## remove fabric ca artifacts
     docker run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org1/msp organizations/fabric-ca/org1/tls-cert.pem organizations/fabric-ca/org1/ca-cert.pem organizations/fabric-ca/org1/IssuerPublicKey organizations/fabric-ca/org1/IssuerRevocationPublicKey organizations/fabric-ca/org1/fabric-ca-server.db'
     docker run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org2/msp organizations/fabric-ca/org2/tls-cert.pem organizations/fabric-ca/org2/ca-cert.pem organizations/fabric-ca/org2/IssuerPublicKey organizations/fabric-ca/org2/IssuerRevocationPublicKey organizations/fabric-ca/org2/fabric-ca-server.db'
+    docker run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org3/msp organizations/fabric-ca/org3/tls-cert.pem organizations/fabric-ca/org3/ca-cert.pem organizations/fabric-ca/org3/IssuerPublicKey organizations/fabric-ca/org3/IssuerRevocationPublicKey organizations/fabric-ca/org3/fabric-ca-server.db'
+    docker run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org4/msp organizations/fabric-ca/org4/tls-cert.pem organizations/fabric-ca/org4/ca-cert.pem organizations/fabric-ca/org4/IssuerPublicKey organizations/fabric-ca/org4/IssuerRevocationPublicKey organizations/fabric-ca/org4/fabric-ca-server.db'
+    docker run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org5/msp organizations/fabric-ca/org5/tls-cert.pem organizations/fabric-ca/org5/ca-cert.pem organizations/fabric-ca/org5/IssuerPublicKey organizations/fabric-ca/org4/IssuerRevocationPublicKey organizations/fabric-ca/org5/fabric-ca-server.db'
     docker run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ordererOrg/msp organizations/fabric-ca/ordererOrg/tls-cert.pem organizations/fabric-ca/ordererOrg/ca-cert.pem organizations/fabric-ca/ordererOrg/IssuerPublicKey organizations/fabric-ca/ordererOrg/IssuerRevocationPublicKey organizations/fabric-ca/ordererOrg/fabric-ca-server.db'
     docker run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf addOrg3/fabric-ca/org3/msp addOrg3/fabric-ca/org3/tls-cert.pem addOrg3/fabric-ca/org3/ca-cert.pem addOrg3/fabric-ca/org3/IssuerPublicKey addOrg3/fabric-ca/org3/IssuerRevocationPublicKey addOrg3/fabric-ca/org3/fabric-ca-server.db'
     # remove channel and script artifacts

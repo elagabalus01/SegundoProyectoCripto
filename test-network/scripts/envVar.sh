@@ -15,6 +15,8 @@ export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers
 export PEER0_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+export PEER0_ORG4_CA=${PWD}/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt
+export PEER0_ORG5_CA=${PWD}/organizations/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/ca.crt
 export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
 export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
 
@@ -42,7 +44,19 @@ setGlobals() {
     export CORE_PEER_LOCALMSPID="Org3MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:11051
+    export CORE_PEER_ADDRESS=localhost:3051
+
+  elif [ $USING_ORG -eq 4 ]; then
+    export CORE_PEER_LOCALMSPID="Org4MSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG4_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp
+    export CORE_PEER_ADDRESS=localhost:4051
+
+  elif [ $USING_ORG -eq 5 ]; then
+    export CORE_PEER_LOCALMSPID="Org5MSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG5_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp
+    export CORE_PEER_ADDRESS=localhost:5051
   else
     errorln "ORG Unknown"
   fi
@@ -52,7 +66,7 @@ setGlobals() {
   fi
 }
 
-# Set environment variables for use in the CLI container 
+# Set environment variables for use in the CLI container
 setGlobalsCLI() {
   setGlobals $1
 
@@ -67,7 +81,11 @@ setGlobalsCLI() {
   elif [ $USING_ORG -eq 2 ]; then
     export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
   elif [ $USING_ORG -eq 3 ]; then
-    export CORE_PEER_ADDRESS=peer0.org3.example.com:11051
+    export CORE_PEER_ADDRESS=peer0.org3.example.com:3051
+  elif [ $USING_ORG -eq 4 ]; then
+    export CORE_PEER_ADDRESS=peer0.org4.example.com:4051
+  elif [ $USING_ORG -eq 5 ]; then
+    export CORE_PEER_ADDRESS=peer0.org5.example.com:5051
   else
     errorln "ORG Unknown"
   fi

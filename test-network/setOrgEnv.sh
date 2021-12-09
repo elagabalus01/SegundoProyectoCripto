@@ -19,6 +19,9 @@ ORDERER_CA=${DIR}/test-network/organizations/ordererOrganizations/example.com/or
 PEER0_ORG1_CA=${DIR}/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 PEER0_ORG2_CA=${DIR}/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 PEER0_ORG3_CA=${DIR}/test-network/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+PEER0_ORG4_CA=${DIR}/test-network/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt
+PEER0_ORG5_CA=${DIR}/test-network/organizations/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/ca.crt
+
 
 
 if [[ ${ORG,,} == "org1" || ${ORG,,} == "digibank" ]]; then
@@ -34,6 +37,27 @@ elif [[ ${ORG,,} == "org2" || ${ORG,,} == "magnetocorp" ]]; then
    CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
    CORE_PEER_ADDRESS=localhost:9051
    CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+elif [[ ${ORG,,} == "org3" || ${ORG,,} == "magnetocorp3" ]]; then
+
+   CORE_PEER_LOCALMSPID=Org3MSP
+   CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
+   CORE_PEER_ADDRESS=localhost:3051
+   CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+
+elif [[ ${ORG,,} == "org4" || ${ORG,,} == "magnetocorp4" ]]; then
+
+   CORE_PEER_LOCALMSPID=Org4MSP
+   CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp
+   CORE_PEER_ADDRESS=localhost:4051
+   CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt
+
+elif [[ ${ORG,,} == "org5" || ${ORG,,} == "magnetocorp5" ]]; then
+
+   CORE_PEER_LOCALMSPID=Org5MSP
+   CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp
+   CORE_PEER_ADDRESS=localhost:5051
+   CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/ca.crt
 
 else
    echo "Unknown \"$ORG\", please choose Org1/Digibank or Org2/Magnetocorp"
