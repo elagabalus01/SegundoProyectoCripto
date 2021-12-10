@@ -2,27 +2,25 @@ const { Gateway, Wallets } = require('fabric-network');
 const path = require('path');
 const fs = require('fs');
 
+// Clase LedgerFacade
 class LedgerFacade{
 
+    // Constructor para crear un objeto de tipo LedgerFacade
     constructor(username){
         this.gotCredentials=false
         this.username=username
     }
 
+    // Función para obtener las credenciales
     async getCredentials(){
-        // load the network configuration
         const ccpPath = path.resolve(process.cwd(), '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
         this.ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
-        // Create a new file system based wallet for managing identities.
+
         const walletPath = path.join(process.cwd(), 'wallet');
         this.wallet = await Wallets.newFileSystemWallet(walletPath);
-        // console.log(`Wallet path: ${walletPath}`);
-        // Check to see if we've already enrolled the user.
+
         this.identity = await this.wallet.get(this.username);
-        // console.log(`ccp Path: ${ccpPath}`)
-        // console.log(this.ccp)
-        // console.log(this.wallet)
-        // console.log(this.identity)
+
         if(this.identity){
             console.log("Se encontraron las credenciales")
             this.gotCredentials=true
@@ -32,8 +30,8 @@ class LedgerFacade{
         }
     }
 
+    // Función para obtener el contrato
     async getContract(){
-        // Create a new gateway for connecting to our peer node.
         this.gateway = new Gateway();
         var wallet=this.wallet
         var identity=this.identity
@@ -41,17 +39,15 @@ class LedgerFacade{
         var username=this.username
         await this.gateway.connect(ccp, {wallet, identity: username, discovery: { enabled: true, asLocalhost: true } });
 
-        // Get the network (channel) our contract is deployed to.
         const network = await this.gateway.getNetwork('mychannel');
 
-        // Get the contract from the network.
         const contract = network.getContract('miContrato');
         return contract
     }
 
+    // Función para obtener todas las transacciones
     async getAllTransactions() {
         try {
-            // Comprueba si ya se leyeron las credenciales
             if (!this.gotCredentials){
                 await this.getCredentials()
             }
@@ -63,10 +59,9 @@ class LedgerFacade{
 
             const contract =await this.getContract()
 
-            // Evaluate the specified transaction.
             const result = await contract.evaluateTransaction('queryAllMovimientos');
             console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-            // Disconnect from the gateway.
+
             await this.gateway.disconnect();
             return result
 
@@ -76,8 +71,8 @@ class LedgerFacade{
         }
     }
 
+    // Se obtiene la transacción por id
     async getTransactionById(id){
-        // Comprueba si ya se leyeron las credenciales
         if (!this.gotCredentials){
             await this.getCredentials()
         }
@@ -88,16 +83,16 @@ class LedgerFacade{
         }
 
         const contract =await this.getContract()
-        // Evaluate the specified transaction.
+
         const result = await contract.evaluateTransaction('queryMovimiento',id);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        // Disconnect from the gateway.
+
         await this.gateway.disconnect();
         return result
     }
 
+    // Función para crear una transacción
     async createTransaction(id,userid,fecha,monto,autor,referencia,dependencia){
-        // Comprueba si ya se leyeron las credenciales
         if (!this.gotCredentials){
             await this.getCredentials()
         }
@@ -108,17 +103,16 @@ class LedgerFacade{
         }
 
         const contract = await this.getContract()
-        // Evaluate the specified transaction.
+
         const result = await contract.submitTransaction('createMovimiento',id,userid,fecha,monto,autor,referencia,dependencia);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        // Disconnect from the gateway.
+
         await this.gateway.disconnect();
         return result
     }
 
     // Función para cambiar al responsable del registro de la transacción
     async changeResponsable(id,new_reponsable){
-        // Comprueba si ya se leyeron las credenciales
         if (!this.gotCredentials){
             await this.getCredentials()
         }
@@ -129,10 +123,9 @@ class LedgerFacade{
         }
 
         const contract = await this.getContract()
-        // Evaluate the specified transaction.
         const result = await contract.submitTransaction('changeMovimientoResponsable',id,new_reponsable);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        // Disconnect from the gateway.
+        
         await this.gateway.disconnect();
         return result
     }

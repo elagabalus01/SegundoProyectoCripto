@@ -1,5 +1,7 @@
+// Se obtiene el elemento en el DOM que contendrá las transacciones
 var transacciones = document.getElementById('transacciones')
-//dependencia_select.innerHTML="<select name='dependenciaid' id='dependencia_select'><option value=5>cargando...</option></select>"
+
+// Función para obtener las transacciones de forma asíncrona cada cierto tiempo
 function obtener_transacciones(){
 	var request=new XMLHttpRequest();
 	request.open("POST","/gobchain");

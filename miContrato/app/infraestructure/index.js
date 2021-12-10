@@ -2,6 +2,6 @@ const DatabaseFacade = require('./lib/DatabaseFacade'); // Carga clase para cone
 const RegisterUser = require('./lib/RegisterUser'); // Carga clase para registrar un usuario
 const calcularFecha = require('./lib/Fecha'); // Función para calcular la fecha actual
 
-module.exports.DatabaseFacade = DatabaseFacade; // Hace pública la clase COnsulta para este módulo
-module.exports.RegisterUser = RegisterUser; // Hace pública la clase COnsulta para este módulo
-module.exports.calcularFecha = calcularFecha;
+module.exports.DatabaseFacade = DatabaseFacade; // Hace pública la clase Consulta para este módulo
+module.exports.RegisterUser = RegisterUser; // Hace pública la clase Consulta para este módulo
+module.exports.calcularFecha = calcularFecha; // Hace pública la función para calcular la fecha actual

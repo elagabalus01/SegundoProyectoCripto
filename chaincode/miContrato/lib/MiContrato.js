@@ -8,8 +8,10 @@
 
 const { Contract } = require('fabric-contract-api');
 
+// Clase MiContrato
 class MiContrato extends Contract {
 
+    // Función para iniciar el ledger con algunos registros
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
         const movimientos = [
@@ -47,6 +49,7 @@ class MiContrato extends Contract {
         console.info('============= END : Initialize Ledger ===========');
     }
 
+    // Función para consultar un movimiento
     async queryMovimiento(ctx, movNumber) {
         const movAsBytes = await ctx.stub.getState(movNumber); // get the car from chaincode state
         if (!movAsBytes || movAsBytes.length === 0) {
@@ -56,6 +59,7 @@ class MiContrato extends Contract {
         return movAsBytes.toString();
     }
 
+    // Función para crear un movimiento
     async createMovimiento(ctx, movNumber, userid, fecha, monto, responsable,referencia,dependencia) {
         console.info('============= START : Create movement ===========');
 
@@ -73,6 +77,7 @@ class MiContrato extends Contract {
         console.info('============= END : Create movement ===========');
     }
 
+    // Función para consultar todos los movimientos
     async queryAllMovimientos(ctx) {
         const startKey = '';
         const endKey = '';
@@ -92,6 +97,7 @@ class MiContrato extends Contract {
         return JSON.stringify(allResults);
     }
 
+    // Función para cambiar un responsable en un movimiento
     async changeMovimientoResponsable(ctx, movNumber, newresponsable) {
         console.info('============= START : change responsable ===========');
 
