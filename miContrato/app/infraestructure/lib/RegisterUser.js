@@ -1,8 +1,11 @@
 DatabaseFacade=require('./DatabaseFacade')
 const crypto=require('crypto') // Importación de la biblioteca criptográfica de node
 var database=new DatabaseFacade()
+
+// Clase RegisterUser
 class RegisterUser{
-    // Clase para registrar un usuario en la base de datos
+
+    // Función para registrar usuario en la base de datos
     static async register_user(data){
         var api_key=RegisterUser.generateAPIKey()
         var hashed_pass=crypto.createHash('sha256').update(data.password, 'utf8').digest().toString("hex")
@@ -16,6 +19,8 @@ class RegisterUser{
             })
         })
     }
+
+    // Función para generar la API Key
     static generateAPIKey(){
         var user_uuid=crypto.randomUUID()
         return crypto.createHash('sha256').update(user_uuid, 'utf8').digest().toString("hex")
