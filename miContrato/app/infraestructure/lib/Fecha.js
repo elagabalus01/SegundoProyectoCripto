@@ -1,3 +1,4 @@
+// Función para calcular la fecha actual
 function calcularFecha(){
     var mydate = new Date(Date.now())
     var month = ["enero", "febrero", "marzo", "abril", "mayor", "junio",

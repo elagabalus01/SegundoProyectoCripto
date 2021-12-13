@@ -1,6 +1,7 @@
+// Se selecciona el select de dependencia
 var dependencia_select = document.getElementById('dependencia_select')
-//dependencia_select.innerHTML="<select name='dependenciaid' id='dependencia_select'><option value=5>cargando...</option></select>"
 
+// Se hace una solicitud asíncrona para obtener las dependencias
 var request=new XMLHttpRequest();
 request.open("POST","/dependencias");
 request.send()
